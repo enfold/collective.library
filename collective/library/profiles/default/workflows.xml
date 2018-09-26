@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<object name="portal_workflow" meta_type="Plone Workflow Tool">
+  <object name="library_workflow" meta_type="Workflow"/>
+  <object name="library_proxy_workflow" meta_type="Workflow"/>
+  <bindings>
+    <type type_id="library">
+      <bound-workflow workflow_id="library_workflow" />
+    </type>
+    <type type_id="library_folder">
+      <bound-workflow workflow_id="library_workflow" />
+    </type>
+    <type type_id="library_folder_proxy">
+      <bound-workflow workflow_id="library_proxy_workflow" />
+    </type>
+  </bindings>
+</object>

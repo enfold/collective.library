@@ -1,0 +1,194 @@
+
+Content Structure
+
+Library 1
+  Library Folder 1
+    File 1
+  Library Folder 2
+    Library Folder 4
+  Document 1
+
+Library 2 - Assigned Library 1 as parent library
+  Library Folder 3
+    Collection 1
+
+Library 3 - Assigned Library 2 as a parent library
+  News Item 1
+
+Library 4 - Assigned Library 1 as a parent library
+  Library Folder 2
+    Image 1
+
+Library 5 - Assigned Library 4 as a parent library
+  Library Folder 5
+    Event 1
+
+Library 6 - Assigned Library 2 and Library 5 as parent libraries.
+
+
+Expected folder_listing/folder_contents results
+
+/Library 1
+ Library Folder 1
+ Library Folder 2
+ Document 1
+
+/Library 1/Library Folder 1
+ File 1
+
+/Library 1/Library Folder 2
+ Library Folder 4
+
+/Library 1/Library Folder 2/Library Folder 4 (empty)
+
+
+/Library 2
+ Library Folder 1
+ Library Folder 2
+ Library Folder 3
+ Document 1
+
+/Library 2/Library Folder 1
+ File 1
+
+/Library 2/Library Folder 2
+ Library Folder 4
+
+/Library 2/Library Folder 2/Library Folder 4 (empty)
+
+/Library 2/Library Folder 3
+ Collection 1
+
+
+/Library 3
+ Library Folder 1
+ Library Folder 2
+ Library Folder 3
+ Document 1
+ News Item 1
+
+/Library 3/Library Folder 1
+ File 1
+
+/Library 3/Library Folder 2
+ Library Folder 4
+
+/Library 3/Library Folder 2/Library Folder 4 (empty)
+
+/Library 3/Library Folder 3
+ Collection 1
+
+
+/Library 4
+ Library Folder 1
+ Library Folder 2
+ Document 1
+
+/Library 4/Library Folder 1
+ File 1
+
+/Library 4/Library Folder 2
+ Image 1
+ Library Folder 4
+
+/Library 4/Library Folder 2/Library Folder 4 (empty)
+
+
+/Library 5
+ Library Folder 1
+ Library Folder 2
+ Library Folder 5
+ Document 1
+
+/Library 5/Library Folder 1
+ File 1
+
+/Library 5/Library Folder 2
+ Image 1
+ Library Folder 4
+
+/Library 5/Library Folder 2/Library Folder 4 (empty)
+
+/Library 5/Library Folder 5
+ Event 1
+
+
+/Library 6
+ Library Folder 1
+ Library Folder 2
+ Library Folder 3
+ Library Folder 5
+ Document 1
+
+/Library 6/Library Folder 1
+ File 1
+
+/Library 6/Library Folder 2
+ Image 1
+ Library Folder 4
+
+/Library 6/Library Folder 2/Library Folder 4 (empty)
+
+/Library 6/Library Folder 3
+ Collection 1
+
+/Library 6/Library Folder 5
+ Event 1
+
+
+Adding library
+
+Adding library_folder to library
+
+Adding content to library
+
+Bulk upload into library
+
+Listing contents of library
+
+Delete content from library
+
+Adding content to library_folder
+
+Bulk upload into library_folder
+
+Adding library_folder to library_folder
+
+Listing contents of library_folder
+
+Delete content from library_folder
+
+Adding library with one or more parent libraries
+
+Editing a library and changing the parent libraries
+
+Listing contents of library with one or more parent libraries
+
+Listing contents of proxied folder
+
+Adding content to proxied folder
+  This should create the missing parent folders in the child library
+
+Adding library_folder to proxied folder
+  This should create the missing parent folders in the child library
+
+Bulk upload into proxied folder
+  This should create the missing parent folders in the child library
+
+Delete content from proxied folder
+  This should fail
+
+PROPFIND of library
+
+PROPFIND of library_folder
+
+PROPFIND of proxied folder
+
+webdav GET of proxied content
+
+webdav PUT into library
+
+webdav PUT into library_folder
+
+webdav PUT into proxied folder
+  This should create the missing parent folders in the child library

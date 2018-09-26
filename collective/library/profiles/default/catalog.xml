@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<object name="portal_catalog" meta_type="Plone Catalog Tool">
+ <index name="parent_libraries" meta_type="KeywordIndex">
+  <indexed_attr value="parent_libraries" />
+ </index>
+ <index name="library" meta_type="FieldIndex">
+  <indexed_attr value="library" />
+ </index>
+ <index name="path_in_library" meta_type="ExtendedPathIndex">
+   <indexed_attr value="path_in_library" />
+ </index>
+
+  <column value="library" />
+</object>

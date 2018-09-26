@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<object meta_type="Plone Types Tool" name="portal_types">
+  <object meta_type="Dexterity FTI" name="library" remove="True" />
+  <object meta_type="Dexterity FTI" name="library_folder" remove="True" />
+  <object meta_type="Dexterity FTI" name="library_folder_proxy" remove="True" />
+</object>

@@ -1,0 +1,20 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:zcml="http://namespaces.zope.org/zcml">
+
+  <configure zcml:condition="installed AccessControl.security">
+
+    <permission
+      id="collective.library.AddLibrary"
+      title="collective.library: Add library" />
+
+    <permission
+      id="collective.library.AddLibraryFolder"
+      title="collective.library: Add library folder" />
+
+    <permission
+      id="collective.library.AddLibraryFolderProxy"
+      title="collective.library: Add library folder proxy" />
+
+  </configure>
+</configure>

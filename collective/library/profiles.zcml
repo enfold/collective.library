@@ -1,0 +1,22 @@
+<configure
+    xmlns="http://namespaces.zope.org/genericsetup">
+
+  <registerProfile
+      name="default"
+      title="collective.library"
+      directory="profiles/default"
+      description="collective.library"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <registerProfile
+      name="uninstall"
+      title="collective.library uninstall"
+      directory="profiles/uninstall"
+      description="collective.library uninstall"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+</configure>

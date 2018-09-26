@@ -1,0 +1,23 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:five="http://namespaces.zope.org/five">
+
+  <five:registerPackage package="." initialize=".initialize" />
+  <include file="permissions.zcml" />
+  <include package=".browser" />
+  <include file="profiles.zcml" />
+
+  <adapter name="path_in_library" factory=".indexers.path_in_library" />
+  <adapter name="parent_libraries" factory=".indexers.parent_libraries" />
+  <adapter name="library" factory=".indexers.library" />
+
+  <subscriber for="Products.CMFCore.interfaces.IContentish
+                   zope.lifecycleevent.interfaces.IObjectAddedEvent"
+              handler=".event_subscribers.content_added"/>
+
+  <subscriber for="collective.library.interfaces.ILibrary
+                   zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+             handler=".event_subscribers.library_modified" />
+
+</configure>
