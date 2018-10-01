@@ -135,6 +135,7 @@ Expected folder_listing/folder_contents results
 /Library 6/Library Folder 5
  Event 1
 
+Installing package
 
 Adding library
 

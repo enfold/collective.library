@@ -26,3 +26,7 @@ class ILibraryFolder(ILibraryContent):
 
 class ILibraryFolderProxy(ILibraryContent):
     """"""
+
+
+class ILibraryAdditionalQuery(Interface):
+    """"""

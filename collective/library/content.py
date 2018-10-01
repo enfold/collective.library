@@ -2,6 +2,7 @@
 from . import constants
 from . import utils as library_utils
 from .interfaces import ILibrary
+from .interfaces import ILibraryAdditionalQuery
 from .interfaces import ILibraryFolder
 from .interfaces import ILibraryFolderProxy
 from AccessControl import ClassSecurityInfo
@@ -26,7 +27,9 @@ from plone.dexterity.content import FTIAwareSpecification
 from plone.dexterity.content import DexterityContent
 from plone.dexterity.content import PasteBehaviourMixin
 from plone.dexterity.filerepresentation import DAVCollectionMixin
+from plone.dexterity.interfaces import IDexterityContainer
 from webdav.davcmds import PropFind
+from zope.component import queryAdapter
 from zope.component import queryUtility
 from zope.globalrequest import getRequest
 from zope.interface import implementer
@@ -36,6 +39,7 @@ import six
 _marker = object()
 
 
+@implementer(IDexterityContainer)
 class BaseLibraryContainer(PasteBehaviourMixin, DAVCollectionMixin,
                            BrowserDefaultMixin, CMFCatalogAware,
                            BTreeFolder2Base, PortalFolderBase,
@@ -106,6 +110,9 @@ class BaseLibraryContainer(PasteBehaviourMixin, DAVCollectionMixin,
 
     def get_content(self, name=None, objects=True, restricted=False, **kw):
         query = {}
+        adapter = queryAdapter(self, interface=ILibraryAdditionalQuery)
+        if adapter is not None:
+            query.update(adapter())
         query.update(kw)
         if 'path' in query:
             del query['path']
