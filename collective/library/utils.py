@@ -41,18 +41,22 @@ def get_library_folder(obj):
 def get_parent_libraries(obj, uids=False):
     library = get_library(obj)
     libraries = list()
+    seen = dict()
 
     def get_parents(lib):
         if lib is None:
             return
-        if uids:
-            libraries.append(content_api.get_uuid(lib))
-        else:
-            libraries.append(lib)
-        relations = base_getattr(lib, constants.PARENT_LIBRARIES_ATTRIBUTE,
-                                 list())
-        for relation in relations:
-            get_parents(relation.to_object)
+        uid = content_api.get_uuid(lib)
+        if uid not in seen:
+            seen[uid] = True
+            if uids:
+                libraries.append(uid)
+            else:
+                libraries.append(lib)
+            relations = base_getattr(lib, constants.PARENT_LIBRARIES_ATTRIBUTE,
+                                     list())
+            for relation in relations:
+                get_parents(relation.to_object)
 
     get_parents(library)
     libraries.reverse()
@@ -75,12 +79,17 @@ def get_child_libraries(library):
     libraries = list()
     relation_catalog = getUtility(ICatalog)
     intids = getUtility(IIntIds)
+    seen = dict()
 
     def get_children(lib):
         query = {'to_id': intids.getId(lib),
                  'from_attribute': constants.PARENT_LIBRARIES_ATTRIBUTE}
         for relation in relation_catalog.findRelations(query):
             child = relation.from_object
-            libraries.append(child)
-            get_children(child)
+            uid = content_api.get_uuid(child)
+            if uid not in seen:
+                seen[uid] = True
+                libraries.append(child)
+                get_children(child)
+    get_children(library)
     return libraries
