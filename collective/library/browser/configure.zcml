@@ -4,23 +4,6 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     xmlns:five="http://namespaces.zope.org/five">
 
-  <configure package="plone.app.content.browser.contents">
-    <browser:page
-      for="collective.library.interfaces.ILibraryContent"
-      class="collective.library.browser.contents.FolderContentsView"
-      name="folder_contents"
-      template="templates/folder_contents.pt"
-      permission="cmf.ListFolderContents"
-      />
-  </configure>
-
-  <browser:page
-    for="collective.library.interfaces.ILibraryContent"
-    class=".contents.FolderContentsItemsView"
-    name="getFolderContentsItems"
-    permission="zope2.View"
-    />
-
   <browser:page
     for="collective.library.interfaces.ILibraryContent"
     class=".contents.FolderListing"

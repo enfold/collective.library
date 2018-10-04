@@ -1,5 +1,6 @@
 
 from .. import constants
+from ..interfaces import ILibraryContent
 from AccessControl import getSecurityManager
 from Acquisition import aq_base
 from Products.Five import BrowserView
@@ -7,6 +8,7 @@ from Products.MimetypesRegistry.MimeTypeItem import guess_icon_path
 from plone.api import portal as portal_api
 from plone.app.content.browser.contents import FolderContentsView as \
     FolderContentsViewBase
+from plone.app.content.browser.vocabulary import VocabularyView as VocabularyViewBase
 from plone.app.content.browser.vocabulary import _parseJSON
 from plone.app.content.browser.vocabulary import _safe_callable_metadata
 from plone.app.content.browser.vocabulary import _unsafe_metadata
@@ -20,10 +22,26 @@ from plone.app.querystring import queryparser
 import six
 
 
-class FolderContentsItemsView(BrowserView):
+class VocabularyView(VocabularyViewBase):
 
     def __call__(self, *args, **kwargs):
-        context = self.context
+        referer = self.request.getHeader('Referer')
+        if referer and 'folder_contents' in referer:
+            name = self.request.get('name', None)
+            if name == 'plone.app.vocabularies.Catalog':
+                query = self.parsed_query()
+                if 'path' in query:
+                    path = query['path']
+                    #import pdb;pdb.set_trace()
+                    if isinstance(path, dict):
+                        path = path['query'][0]
+                    portal = portal_api.get()
+                    object = portal.restrictedTraverse(path)
+                    if ILibraryContent.providedBy(object):
+                        return self.library_contents(object)
+        return super(VocabularyView, self).__call__(*args, **kwargs)
+
+    def library_contents(self, context):
         base_url = context.absolute_url()
         parent_path = '/'.join(context.getPhysicalPath())
         self.request.response.setHeader(
@@ -96,23 +114,6 @@ class FolderContentsItemsView(BrowserView):
             'results': items,
             'total': total
         })
-
-    def parsed_query(self):
-        query = _parseJSON(self.request.get('query', ''))
-        if query:
-            parsed = queryparser.parseFormquery(
-                self.context, query['criteria'])
-            if 'sort_on' in query:
-                parsed['sort_on'] = query['sort_on']
-            if 'sort_order' in query:
-                parsed['sort_order'] = str(query['sort_order'])
-            query = parsed
-        else:
-            query = {}
-        return query
-
-    def get_base_path(self, context):
-        return getNavigationRoot(context)
 
 
 class FolderContentsView(FolderContentsViewBase):

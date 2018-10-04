@@ -1,0 +1,14 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:five="http://namespaces.zope.org/five">
+
+  <browser:page
+    name="getVocabulary"
+    for="*"
+    class=".browser.contents.VocabularyView"
+    permission="zope2.View"
+    />
+
+</configure>
