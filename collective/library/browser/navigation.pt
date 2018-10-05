@@ -1,0 +1,30 @@
+<tal:block i18n:domain="plone">
+<aside class="portlet portletNavigationTree"
+    role="navigation">
+
+    <header class="portletHeader hiddenStructure">
+      Navigation
+    </header>
+
+    <nav class="portletContent lastItem">
+        <ul class="navTree navTreeLevel0">
+          <tal:item tal:repeat="item view/get_items">
+            <li tal:define="current item/current;
+                            in_path item/in_path;
+                            li_class python:' navTreeCurrentNode' if current else '';
+                            li_class python:'%s navTreeItemInPath' % li_class if in_path else li_class;
+                            li_class string: ${li_class} navTreeFolderish;"
+                attributes="class string:navTreeItem visualNoMarker${li_class} section-${item/normalized_id};">
+              <a href="#"
+                 tal:define="item_class string:state-${item/normalized_review_state};
+                             item_class python:'%s navTreeCurrentItem' % item_class if current else item_class;"
+                 tal:attributes="class string:${item_class}${li_class} contenttype-${item/normalized_portal_type};
+                                 href item/url;
+                                 title item/description;"
+                 tal:content="item/title">Item</a>
+            </li>
+          </tal:item>
+        </ul>
+    </nav>
+</aside>
+</tal:block>

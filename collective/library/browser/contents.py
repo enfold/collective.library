@@ -32,7 +32,6 @@ class VocabularyView(VocabularyViewBase):
                 query = self.parsed_query()
                 if 'path' in query:
                     path = query['path']
-                    #import pdb;pdb.set_trace()
                     if isinstance(path, dict):
                         path = path['query'][0]
                     portal = portal_api.get()

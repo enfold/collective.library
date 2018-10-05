@@ -19,4 +19,11 @@
     template="listing.pt"
     />
 
+  <plone:portlet
+    name="collective.library.portlets.navigation"
+    interface=".navigation.INavigationPortlet"
+    assignment=".navigation.Assignment"
+    renderer=".navigation.Renderer"
+    addview=".navigation.AddForm" />
+
 </configure>

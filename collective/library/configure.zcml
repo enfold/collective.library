@@ -20,4 +20,8 @@
                    zope.lifecycleevent.interfaces.IObjectModifiedEvent"
              handler=".event_subscribers.library_modified" />
 
+  <subscriber for="collective.library.interfaces.ILibrary
+                   zope.lifecycleevent.interfaces.IObjectAddedEvent"
+              handler=".event_subscribers.library_added" />
+
 </configure>

@@ -31,7 +31,6 @@ from plone.dexterity.interfaces import IDexterityContainer
 from webdav.davcmds import PropFind
 from zope.component import queryAdapter
 from zope.component import queryUtility
-from zope.globalrequest import getRequest
 from zope.interface import implementer
 
 import six
@@ -108,7 +107,8 @@ class BaseLibraryContainer(PasteBehaviourMixin, DAVCollectionMixin,
 
         return BTreeFolder2Base.__getattr__(self, name)
 
-    def get_content(self, name=None, objects=True, restricted=False, **kw):
+    def get_content(self, name=None, objects=True, restricted=False,
+                    folders_only=False, **kw):
         query = {}
         adapter = queryAdapter(self, interface=ILibraryAdditionalQuery)
         if adapter is not None:
@@ -116,7 +116,6 @@ class BaseLibraryContainer(PasteBehaviourMixin, DAVCollectionMixin,
         query.update(kw)
         if 'path' in query:
             del query['path']
-        request = getRequest()
         catalog = portal_api.get_tool('portal_catalog')
         portal_types = portal_api.get_tool('portal_types')
         parent_uids = library_utils.get_parent_libraries(self, uids=True)
@@ -133,8 +132,11 @@ class BaseLibraryContainer(PasteBehaviourMixin, DAVCollectionMixin,
                                     'depth': 1}
         query['library'] = parent_uids
 
-        query['portal_type'] = [t for t in portal_types.listContentTypes()
-                                if t != constants.LIBRARY_PORTAL_TYPE]
+        if folders_only:
+            query['portal_type'] = constants.LIBRARY_FOLDER_PORTAL_TYPE
+        else:
+            query['portal_type'] = [t for t in portal_types.listContentTypes()
+                                    if t != constants.LIBRARY_PORTAL_TYPE]
 
         if 'sort_on' not in query:
             query['sort_on'] = 'sortable_title'
