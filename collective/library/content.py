@@ -12,6 +12,9 @@ from AccessControl import Unauthorized
 from AccessControl import getSecurityManager
 from AccessControl.class_init import InitializeClass
 from Acquisition import aq_base
+from Acquisition import aq_inner
+from Acquisition import aq_parent
+from OFS.SimpleItem import SimpleItem
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2Base
 from Products.CMFCore import permissions as cmf_permissions
 from Products.CMFCore.CMFCatalogAware import CMFCatalogAware
@@ -22,6 +25,7 @@ from Products.CMFPlone.interfaces import IConstrainTypes
 from ZPublisher.interfaces import UseTraversalDefault
 from plone.api import content as content_api
 from plone.api import portal as portal_api
+from plone.app.iterate.interfaces import IIterateAware
 from plone.dexterity.content import AttributeValidator
 from plone.dexterity.content import FTIAwareSpecification
 from plone.dexterity.content import DexterityContent
@@ -32,8 +36,19 @@ from webdav.davcmds import PropFind
 from zope.component import queryAdapter
 from zope.component import queryUtility
 from zope.interface import implementer
+from zope.interface.declarations import implementedBy
+from zope.interface.declarations import providedBy
+from zope.interface.declarations import getObjectSpecification
+from zope.interface.declarations import ObjectSpecificationDescriptor
 
+try:
+    from plone.multilingual.interfaces import ITranslatable
+except ImportError:
+    ITranslatable = None
+
+import new
 import six
+import types
 
 _marker = object()
 
@@ -163,7 +178,7 @@ class BaseLibraryContainer(PasteBehaviourMixin, DAVCollectionMixin,
                         item = brain.getObject()
                     else:
                         item = brain._unrestrictedGetObject()
-                    item = aq_base(item).__of__(self)
+                    item = ContentProxy(item).__of__(self)
             else:
                 item = brain
             _id = brain.id
@@ -188,7 +203,13 @@ class BaseLibraryContainer(PasteBehaviourMixin, DAVCollectionMixin,
             ids = []
         if isinstance(ids, six.string_types):
             ids = [ids]
+        content_ids = self.contentIds()
         for id in ids:
+            # Don't allow delete of objects from parent libraries.
+            if id not in content_ids:
+                raise Unauthorized(
+                    "Do not have permissions to remove this object"
+                )
             item = self._getOb(id)
             if not getSecurityManager().checkPermission(
                 cmf_permissions.DeleteObjects,
@@ -319,3 +340,117 @@ class LibraryFolderProxy(BaseLibraryContainer):
 
 
 InitializeClass(LibraryFolderProxy)
+
+
+class DelegatingSpecification(ObjectSpecificationDescriptor):
+    """A __providedBy__ decorator that returns the interfaces provided by
+    the object, plus those of the cached object.
+    """
+
+    def __get__(self, inst, cls=None):
+
+        # We're looking at a class - fall back on default
+        if inst is None:
+            return getObjectSpecification(cls)
+
+        # Find the cached value.
+        cache = getattr(inst, '_v__providedBy__', None)
+
+        # Find the data we need to know if our cache needs to be invalidated
+        provided = alias_provides = getattr(inst, '__provides__', None)
+
+        # See if we have a valid cache, and if so return it
+        if cache is not None:
+            cached_mtime, cached_provides, cached_provided = cache
+
+            if (
+                inst._p_mtime == cached_mtime and
+                alias_provides is cached_provides
+            ):
+                return cached_provided
+
+        # If the instance doesn't have a __provides__ attribute, get the
+        # interfaces implied by the class as a starting point.
+        if provided is None:
+            provided = implementedBy(cls)
+
+        # Add the interfaces provided by the target
+        target = aq_base(inst._target)
+        if target is None:
+            return provided  # don't cache yet!
+
+        # Add the interfaces provided by the target, but take away
+        # IHasAlias if set
+        provided += providedBy(target) - IIterateAware
+
+        if ITranslatable:
+            provided -= ITranslatable
+
+        inst._v__providedBy__ = inst._p_mtime, alias_provides, provided
+        return provided
+
+
+class ContentProxy(SimpleItem):
+
+    __providedBy__ = DelegatingSpecification()
+
+    def __init__(self, proxied):
+        self._proxied = proxied
+
+    @property
+    def id(self):
+        return aq_inner(self._proxied).id
+
+    def Title(self):
+        """ """
+        return self.title
+
+    @property
+    def title(self):
+        return aq_inner(self._proxied).Title()
+
+    def Description(self):
+        """ """
+        return aq_inner(self._proxied).Description()
+
+    def __getattr__(self, attr):
+        if (
+            attr.startswith('_v_')
+            or attr.startswith('_p_',)
+            or attr.endswith('_Permission')
+        ):
+            raise AttributeError(attr)
+
+        proxied = aq_inner(self._proxied)
+
+        if not hasattr(aq_base(proxied), attr):
+            return super(ContentProxy, self).__getattr__(attr)
+
+        value = getattr(proxied, attr, _marker)
+
+        if value is _marker:
+            return super(ContentProxy, self).__getattr__(attr)
+
+        if aq_parent(value) is proxied:
+            value = aq_base(value).__of__(self)
+
+        if isinstance(value, types.MethodType):
+            return types.MethodType(value.im_func, self, type(self))
+
+        return value
+
+    @property
+    def __klass__(self):
+        """ """
+
+        klass = getattr(self, '_v_class', None)
+        if klass is not None:
+            return klass
+
+        proxied = self._proxied
+
+        self._v_class = klass = new.classobj('ContentProxy', (ContentProxy, aq_base(proxied).__class__), {})
+        return klass
+
+
+InitializeClass(ContentProxy)
