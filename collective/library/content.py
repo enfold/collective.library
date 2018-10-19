@@ -349,7 +349,7 @@ class LibraryFolderProxy(BaseLibraryContainer):
     @property
     def propertysheets(self):
         davprops = DAVProps(self._proxied)
-        return {'DAV': davprops}
+        return {'DAV:': davprops}
 
 
 InitializeClass(LibraryFolderProxy)
@@ -468,7 +468,7 @@ class ContentProxy(SimpleItem):
     @property
     def propertysheets(self):
         davprops = DAVProps(self._proxied)
-        return {'DAV': davprops}
+        return {'DAV:': davprops}
 
 
 InitializeClass(ContentProxy)
