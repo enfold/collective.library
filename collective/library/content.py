@@ -32,6 +32,7 @@ from plone.dexterity.content import DexterityContent
 from plone.dexterity.content import PasteBehaviourMixin
 from plone.dexterity.filerepresentation import DAVCollectionMixin
 from plone.dexterity.interfaces import IDexterityContainer
+from webdav.davcmds import DAVProps
 from webdav.davcmds import PropFind
 from zope.component import queryAdapter
 from zope.component import queryUtility
@@ -169,16 +170,19 @@ class BaseLibraryContainer(PasteBehaviourMixin, DAVCollectionMixin,
         count = 0
         for brain in results:
             if objects:
-                if (brain.portal_type == constants.LIBRARY_FOLDER_PORTAL_TYPE
-                        and brain.library != library_uid):
-                    item = LibraryFolderProxy(id=brain.id,
-                                              title=brain.Title).__of__(self)
+                if restricted:
+                    item = brain.getObject()
                 else:
-                    if restricted:
-                        item = brain.getObject()
+                    item = brain._unrestrictedGetObject()
+                if brain.library != library_uid:
+                    portal_type = brain.portal_type
+                    if portal_type == constants.LIBRARY_FOLDER_PORTAL_TYPE:
+                        item = LibraryFolderProxy(
+                            item,
+                            id=brain.id,
+                            title=brain.Title).__of__(self)
                     else:
-                        item = brain._unrestrictedGetObject()
-                    item = ContentProxy(item).__of__(self)
+                        item = ContentProxy(item).__of__(self)
             else:
                 item = brain
             _id = brain.id
@@ -314,6 +318,10 @@ class LibraryFolderProxy(BaseLibraryContainer):
 
     portal_type = 'library_folder_proxy'
 
+    def __init__(self, proxied, id=None, **kwargs):
+        super(LibraryFolderProxy, self).__init__(id=id, **kwargs)
+        self._proxied = proxied
+
     def _setObject(self, id, object, roles=None, user=None, set_owner=1,
                    suppress_events=False):
         nearest_folder = library_utils.get_library_folder(self)
@@ -337,6 +345,11 @@ class LibraryFolderProxy(BaseLibraryContainer):
         return parent._setObject(id, object, roles=roles, user=user,
                                  set_owner=set_owner,
                                  suppress_events=suppress_events)
+
+    @property
+    def propertysheets(self):
+        davprops = DAVProps(self._proxied)
+        return {'DAV': davprops}
 
 
 InitializeClass(LibraryFolderProxy)
@@ -451,6 +464,11 @@ class ContentProxy(SimpleItem):
 
         self._v_class = klass = new.classobj('ContentProxy', (ContentProxy, aq_base(proxied).__class__), {})
         return klass
+
+    @property
+    def propertysheets(self):
+        davprops = DAVProps(self._proxied)
+        return {'DAV': davprops}
 
 
 InitializeClass(ContentProxy)
