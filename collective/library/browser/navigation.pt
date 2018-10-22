@@ -11,9 +11,11 @@
           <tal:item tal:repeat="item view/get_items">
             <li tal:define="current item/current;
                             in_path item/in_path;
+                            local_content item/local_content;
                             li_class python:' navTreeCurrentNode' if current else '';
                             li_class python:'%s navTreeItemInPath' % li_class if in_path else li_class;
-                            li_class string: ${li_class} navTreeFolderish;"
+                            li_class string: ${li_class} navTreeFolderish;
+                            li_class python: '%s local-content' % li_class if local_content else '%s inherited-content' % li_class;"
                 attributes="class string:navTreeItem visualNoMarker${li_class} section-${item/normalized_id};">
               <a href="#"
                  tal:define="item_class string:state-${item/normalized_review_state};

@@ -59,6 +59,8 @@ class Renderer(base.Renderer):
             review_state = getattr(item, 'review_state', None)
             normalized_review_state = idnormalizer.normalize(review_state)
             normalized_portal_type = idnormalizer.normalize(portal_type)
+            context_path = '/'.join(self.context.getPhysicalPath())
+            item_path = item.getPath()
             items.append(
                 {
                     'url': '%s/%s' % (base_url, item.getId),
@@ -69,6 +71,7 @@ class Renderer(base.Renderer):
                     'normalized_id': normalized_id,
                     'normalized_review_state': normalized_review_state,
                     'normalized_portal_type': normalized_portal_type,
+                    'local_content': item_path.startswith(context_path),
                 }
             )
         return items

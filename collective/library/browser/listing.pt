@@ -46,6 +46,9 @@
                 item_is_event python:view.is_event(obj);
                 item_has_image python:item.getIcon;
                 item_type_class python:('contenttype-' + view.normalizeString(item_type)) if showicons else '' ;
+                item_parent_real_path python:'/'.join(obj.aq_parent.getPhysicalPath());
+                context_path python:'/'.join(context.getPhysicalPath());
+                item_inherited_class python:'local-content' if (item_parent_real_path == context_path) else 'inherited-content' ;
                 ">
               <metal:block define-slot="entry">
                 <article class="entry">
@@ -53,13 +56,13 @@
                     <span class="summary" tal:attributes="title item_type">
                       <a tal:condition="python:item_type == 'File' and showicons"
                          tal:attributes="href item_link;
-                                         class string:$item_type_class $item_wf_state_class url;
+                                         class string:$item_type_class $item_wf_state_class url $item_inherited_class;
                                          title item_type">
                          <img class="mime-icon"
                                 tal:attributes="src item/MimeTypeIcon">
                       </a>
                       <a tal:attributes="href item_link;
-                                            class string:$item_type_class $item_wf_state_class url;
+                                            class string:$item_type_class $item_wf_state_class url $item_inherited_class;
                                             title item_type"
                          tal:content="item_title">Item Title
                       </a>
