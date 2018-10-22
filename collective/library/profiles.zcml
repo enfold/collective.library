@@ -19,4 +19,22 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
 
+  <registerProfile
+      name="upgrade1002"
+      title="collective.library upgrade to 1002"
+      directory="profiles/upgrade1002"
+      description="collective.library upgrade to 10002"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <upgradeStep
+    source="1001"
+    destination="1002"
+    title="Upgrade to 1002"
+    description="Upgrade to 1002"
+    handler=".upgrades.upgrade_to_1002"
+    profile="collective.library:default">
+  </upgradeStep>
+
 </configure>
