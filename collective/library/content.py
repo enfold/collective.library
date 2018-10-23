@@ -125,16 +125,6 @@ class BaseLibraryContainer(PasteBehaviourMixin, DAVCollectionMixin,
 
     def get_content(self, name=None, objects=True, restricted=False,
                     folders_only=False, **kw):
-        query = {}
-        adapter = queryAdapter(self, interface=ILibraryAdditionalQuery)
-        if adapter is not None:
-            query.update(adapter())
-        query.update(kw)
-        if 'path' in query:
-            del query['path']
-        catalog = portal_api.get_tool('portal_catalog')
-        portal_types = portal_api.get_tool('portal_types')
-        parent_uids = library_utils.get_parent_libraries(self, uids=True)
         library = library_utils.get_library(self)
         if library is None:
             return list()
@@ -144,38 +134,67 @@ class BaseLibraryContainer(PasteBehaviourMixin, DAVCollectionMixin,
             path_in_library = ['']
         if path_in_library is None:
             return list()
-        query['path_in_library'] = {'query': '/'.join(path_in_library),
-                                    'depth': 1}
-        query['library'] = parent_uids
-
+        base_query = dict(path_in_library={'query': '/'.join(path_in_library),
+                                           'depth': 1})
+        base_query.update(kw)
+        portal_types = portal_api.get_tool('portal_types')
         if folders_only:
-            query['portal_type'] = constants.LIBRARY_FOLDER_PORTAL_TYPE
+            base_query['portal_type'] = constants.LIBRARY_FOLDER_PORTAL_TYPE
         else:
-            query['portal_type'] = [t for t in portal_types.listContentTypes()
-                                    if t != constants.LIBRARY_PORTAL_TYPE]
+            base_query['portal_type'] = \
+                [t for t in portal_types.listContentTypes()
+                 if t != constants.LIBRARY_PORTAL_TYPE]
 
-        if 'sort_on' not in query:
-            query['sort_on'] = 'sortable_title'
-        elif query['sort_on'] == 'getObjPositionInParent':
-            query['sort_on'] = 'sortable_title'
+        if 'sort_on' not in base_query:
+            base_query['sort_on'] = 'sortable_title'
+        elif base_query['sort_on'] == 'getObjPositionInParent':
+            base_query['sort_on'] = 'sortable_title'
 
         if name is not None:
-            query['id'] = name
-        content = list()
+            base_query['id'] = name
+
+        if 'path' in base_query:
+            del base_query['path']
+
+        local_query = base_query.copy()
+        local_query['library'] = library_uid
+
+        folders = list()
+        non_folders = list()
+        catalog = portal_api.get_tool('portal_catalog')
         if restricted:
-            results = catalog.searchResults(**query)
+            local_results = catalog.searchResults(**local_query)
         else:
-            results = catalog.unrestrictedSearchResults(**query)
+            local_results = catalog.unrestrictedSearchResults(**local_query)
+
+        if name is not None and len(local_results) != 0:
+            parent_results = list()
+        else:
+            query = base_query.copy()
+            parent_uids = library_utils.get_parent_libraries(self, uids=True)
+            parent_uids = [u for u in parent_uids if u != library_uid]
+            adapter = queryAdapter(library, interface=ILibraryAdditionalQuery)
+            if adapter is not None:
+                query.update(adapter())
+            query['library'] = parent_uids
+            if restricted:
+                parent_results = catalog.searchResults(**query)
+            else:
+                parent_results = catalog.unrestrictedSearchResults(**query)
+
+        if len(parent_results):
+            results = local_results + parent_results
+        else:
+            results = local_results
         seen = dict()
-        count = 0
         for brain in results:
+            portal_type = brain.portal_type
             if objects:
                 if restricted:
                     item = brain.getObject()
                 else:
                     item = brain._unrestrictedGetObject()
                 if brain.library != library_uid:
-                    portal_type = brain.portal_type
                     if portal_type == constants.LIBRARY_FOLDER_PORTAL_TYPE:
                         item = LibraryFolderProxy(
                             item,
@@ -187,14 +206,15 @@ class BaseLibraryContainer(PasteBehaviourMixin, DAVCollectionMixin,
                 item = brain
             _id = brain.id
             if _id in seen:
-                if brain.library == library_uid:
-                    content[seen[_id]] = item
+                continue
             else:
-                seen[_id] = count
-                content.append(item)
-                count = count + 1
+                seen[_id] = True
+                if portal_type == constants.LIBRARY_FOLDER_PORTAL_TYPE:
+                    folders.append(item)
+                else:
+                    non_folders.append(item)
 
-        return content
+        return folders + non_folders
 
     @security.protected(cmf_permissions.DeleteObjects)
     def manage_delObjects(self, ids=None, REQUEST=None):
