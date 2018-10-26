@@ -31,6 +31,11 @@ setup(name='collective.library',
           'setuptools',
           'plone.api',
       ],
+      extras_require={
+          'test': [
+              'plone.app.testing',
+          ]
+      },
       entry_points="""
       # -*- Entry points: -*-
       [z3c.autoinclude.plugin]
