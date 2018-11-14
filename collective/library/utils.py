@@ -86,6 +86,8 @@ def get_child_libraries(library):
                  'from_attribute': constants.PARENT_LIBRARIES_ATTRIBUTE}
         for relation in relation_catalog.findRelations(query):
             child = relation.from_object
+            if child is None:
+                continue
             uid = content_api.get_uuid(child)
             if uid not in seen:
                 seen[uid] = True
