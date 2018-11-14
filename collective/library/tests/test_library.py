@@ -249,3 +249,78 @@ class TestParentLibraries(BaseTestCase):
                              'document1']
         content_ids = [c.id for c in lib6.get_content()]
         self.assertListEqual(content_ids, expected_contents)
+
+    def test_change_parent_libraries(self):
+        from z3c.relationfield import RelationValue
+        lib1 = self.portal['lib1']
+        lib1_id = self.intids.getId(lib1)
+        lib1_rel = RelationValue(lib1_id)
+        lib6 = self.portal['lib6']
+        lib6.parent_libraries = [lib1_rel]
+        expected_contents = ['folder1',
+                             'folder2',
+                             'document1']
+        content_ids = [c.id for c in lib6.get_content()]
+        self.assertListEqual(content_ids, expected_contents)
+
+    def test_list_proxied_folder_contents(self):
+        lib5 = self.portal['lib5']
+        proxied = lib5['folder5']
+        expected_contents = ['image1']
+        content_ids = [c.id for c in proxied.get_content()]
+        self.assertListEqual(content_ids, expected_contents)
+
+    def test_add_content_to_parent_library(self):
+        lib4 = self.portal['lib4']
+        folder5 = lib4['folder5']
+        folder5.invokeFactory('Document', 'document2', title=u'document 2')
+        lib5 = self.portal['lib5']
+        proxied = lib5['folder5']
+        expected_contents = ['document2',
+                             'image1']
+        content_ids = [c.id for c in proxied.get_content()]
+        self.assertListEqual(content_ids, expected_contents)
+
+    def test_add_content_to_proxied_folder(self):
+        lib5 = self.portal['lib5']
+        proxied = lib5['folder5']
+        proxied.invokeFactory('Document', 'document2', title=u'document 2')
+        expected_contents = ['document2',
+                             'image1']
+        content_ids = [c.id for c in proxied.get_content()]
+        self.assertListEqual(content_ids, expected_contents)
+        lib4 = self.portal['lib4']
+        folder5 = lib4['folder5']
+        expected_contents = ['image1']
+        content_ids = [c.id for c in folder5.get_content()]
+        self.assertListEqual(content_ids, expected_contents)
+
+    def test_add_folder_to_parent_library(self):
+        lib4 = self.portal['lib4']
+        folder5 = lib4['folder5']
+        folder5.invokeFactory('library_folder', 'folder7',
+                              title=u'library folder 7')
+        folder7 = folder5['folder7']
+        folder7.invokeFactory('Document', 'document2', title=u'document 2')
+        lib5 = self.portal['lib5']
+        proxied = lib5['folder5']['folder7']
+        expected_contents = ['document2']
+        content_ids = [c.id for c in proxied.get_content()]
+        self.assertListEqual(content_ids, expected_contents)
+
+    def test_delete_content_from_parent_folder(self):
+        from AccessControl import Unauthorized
+        lib2 = self.portal['lib2']
+        proxied = lib2['folder1']
+        with self.assertRaises(Unauthorized):
+            proxied.manage_delObjects(['document1'])
+
+    def test_library_propfind(self):
+        lib1 = self.portal['lib1']
+        propfind = lib1.PROPFIND(self.request, self.request.response)
+        self.assertEquals(propfind.status, 207)
+        self.assertIn('<n:title>library 1</n:title>', propfind.body)
+        self.assertIn('<n:title>library folder 1</n:title>', propfind.body)
+        self.assertIn('<n:title>library folder 2</n:title>', propfind.body)
+        self.assertIn('<n:title>library folder 4</n:title>', propfind.body)
+        self.assertIn('<n:title>document 1</n:title>', propfind.body)

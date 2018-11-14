@@ -12,6 +12,7 @@ class BaseTestCase(unittest.TestCase):
     def setUp(self):
         self.app = self.layer['app']
         self.portal = self.layer['portal']
+        self.request = self.layer['request']
 
     def login_as_portal_owner(self):
         """
