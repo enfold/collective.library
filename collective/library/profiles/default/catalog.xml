@@ -10,5 +10,7 @@
    <indexed_attr value="path_in_library" />
  </index>
 
-  <column value="library" />
+ <column value="library" />
+ <column value="obj_path_in_library" />
+
 </object>

@@ -12,6 +12,13 @@ def path_in_library(obj):
 
 
 @indexer(IContentish)
+def obj_path_in_library(obj):
+    path = library_utils.get_path_in_library(obj)
+    if path is not None:
+        return '/'.join(path)
+
+
+@indexer(IContentish)
 def parent_libraries(obj):
     return library_utils.get_parent_libraries(obj, uids=True)
 

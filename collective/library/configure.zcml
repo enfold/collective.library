@@ -9,6 +9,7 @@
   <include file="profiles.zcml" />
 
   <adapter name="path_in_library" factory=".indexers.path_in_library" />
+  <adapter name="obj_path_in_library" factory=".indexers.obj_path_in_library" />
   <adapter name="parent_libraries" factory=".indexers.parent_libraries" />
   <adapter name="library" factory=".indexers.library" />
 

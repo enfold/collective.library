@@ -205,7 +205,6 @@ class TestParentLibraries(BaseTestCase):
         lib2 = self.portal['lib2']
         expected_contents = ['folder3',
                              'folder1',
-                             'folder2',
                              'document1']
         content_ids = [c.id for c in lib2.get_content()]
         self.assertListEqual(content_ids, expected_contents)
@@ -213,7 +212,6 @@ class TestParentLibraries(BaseTestCase):
     def test_library3_folder_contents(self):
         lib3 = self.portal['lib3']
         expected_contents = ['folder1',
-                             'folder2',
                              'folder3',
                              'newsitem1',
                              'document1']
@@ -224,7 +222,6 @@ class TestParentLibraries(BaseTestCase):
         lib4 = self.portal['lib4']
         expected_contents = ['folder5',
                              'folder1',
-                             'folder2',
                              'document1']
         content_ids = [c.id for c in lib4.get_content()]
         self.assertListEqual(content_ids, expected_contents)
@@ -233,7 +230,6 @@ class TestParentLibraries(BaseTestCase):
         lib5 = self.portal['lib5']
         expected_contents = ['folder6',
                              'folder1',
-                             'folder2',
                              'folder5',
                              'document1']
         content_ids = [c.id for c in lib5.get_content()]
@@ -242,7 +238,6 @@ class TestParentLibraries(BaseTestCase):
     def test_library6_folder_contents(self):
         lib6 = self.portal['lib6']
         expected_contents = ['folder1',
-                             'folder2',
                              'folder3',
                              'folder5',
                              'folder6',
@@ -258,7 +253,6 @@ class TestParentLibraries(BaseTestCase):
         lib6 = self.portal['lib6']
         lib6.parent_libraries = [lib1_rel]
         expected_contents = ['folder1',
-                             'folder2',
                              'document1']
         content_ids = [c.id for c in lib6.get_content()]
         self.assertListEqual(content_ids, expected_contents)
