@@ -355,6 +355,8 @@ InitializeClass(LibraryFolder)
 class LibraryFolderProxy(BaseLibraryContainer):
     """ """
 
+    is_folder_proxy = True
+
     security = ClassSecurityInfo()
 
     portal_type = 'library_folder_proxy'
@@ -447,6 +449,8 @@ class DelegatingSpecification(ObjectSpecificationDescriptor):
 class ContentProxy(SimpleItem):
 
     __providedBy__ = DelegatingSpecification()
+
+    is_content_proxy = True
 
     def __init__(self, proxied):
         self._proxied = proxied

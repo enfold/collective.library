@@ -11,4 +11,22 @@
     permission="zope2.View"
     />
 
+  <browser:menu
+    id="plone_contentmenu_workflow"
+    class=".browser.menu.WorkflowMenu"
+    />
+
+  <browser:menu
+    id="plone_contentmenu_actions"
+    class=".browser.menu.ActionsMenu"
+    />
+
+  <browser:page
+    name="plone_context_state"
+    for="*"
+    permission="zope.Public"
+    class=".browser.context.ContextState"
+    allowed_interface="plone.app.layout.globals.interfaces.IContextState"
+    />
+
 </configure>
