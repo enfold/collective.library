@@ -208,6 +208,7 @@ class BaseLibraryContainer(PasteBehaviourMixin, DAVCollectionMixin,
         else:
             results = local_results
         seen = dict()
+        results.sort(key=lambda b: b.sortable_title)
         for brain in results:
             portal_type = brain.portal_type
             if objects:
@@ -234,8 +235,6 @@ class BaseLibraryContainer(PasteBehaviourMixin, DAVCollectionMixin,
                     folders.append(item)
                 else:
                     non_folders.append(item)
-        folders.sort(key=lambda b: b.sortable_title)
-        non_folders.sort(key=lambda b: b.sortable_title)
         return folders + non_folders
 
     @security.protected(cmf_permissions.DeleteObjects)
