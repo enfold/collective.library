@@ -12,3 +12,10 @@ def upgrade_to_1003(portal_setup):
                                           'catalog')
     catalog = portal_api.get_tool('portal_catalog')
     catalog.refreshCatalog()
+
+
+def upgrade_to_1004(portal_setup):
+    portal_setup.runImportStepFromProfile('profile-collective.library:default',
+                                          'catalog')
+    catalog = portal_api.get_tool('portal_catalog')
+    catalog.refreshCatalog()

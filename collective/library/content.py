@@ -234,7 +234,8 @@ class BaseLibraryContainer(PasteBehaviourMixin, DAVCollectionMixin,
                     folders.append(item)
                 else:
                     non_folders.append(item)
-
+        folders.sort(key=lambda b: b.sortable_title)
+        non_folders.sort(key=lambda b: b.sortable_title)
         return folders + non_folders
 
     @security.protected(cmf_permissions.DeleteObjects)

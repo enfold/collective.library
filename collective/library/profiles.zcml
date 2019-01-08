@@ -46,4 +46,13 @@
     profile="collective.library:default">
   </upgradeStep>
 
+  <upgradeStep
+    source="1003"
+    destination="1004"
+    title="Upgrade to 1004"
+    description="Upgrade to 1004"
+    handler=".upgrades.upgrade_to_1004"
+    profile="collective.library:default">
+  </upgradeStep>
+
 </configure>

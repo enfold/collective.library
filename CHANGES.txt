@@ -1,0 +1,7 @@
+Changelog
+=========
+
+1.0 (unreleased)
+----------------
+
+- Sort local and parent content together.

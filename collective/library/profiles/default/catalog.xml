@@ -12,5 +12,6 @@
 
  <column value="library" />
  <column value="obj_path_in_library" />
+ <column value="sortable_title" />
 
 </object>

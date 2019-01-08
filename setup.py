@@ -4,7 +4,7 @@ from setuptools import setup
 
 import os
 
-version = '1.0dev0'
+version = '1.0'
 
 setup(name='collective.library',
       version=version,
