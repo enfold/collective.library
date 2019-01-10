@@ -310,7 +310,7 @@ class BaseLibraryContainer(PasteBehaviourMixin, DAVCollectionMixin,
     @security.protected(cmf_permissions.ListFolderContents)
     def listDAVObjects(self):
         """ """
-        return list(self.get_content())
+        return list(self.get_content(restricted=True))
 
     @security.protected(webdav_access)
     def PROPFIND(self, REQUEST, RESPONSE):

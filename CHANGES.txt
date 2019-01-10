@@ -7,3 +7,5 @@ Changelog
 - Sort local and parent content together.
 
 - Sort before we convert to objects.
+
+- Only show content that user has permissions to see on PROPFIND
