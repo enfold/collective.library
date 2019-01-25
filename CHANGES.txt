@@ -15,3 +15,5 @@ Changelog
 - monkey patch base action to not work with proxied content
 
 - override folder contents
+
+- add compiled js

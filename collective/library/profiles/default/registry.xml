@@ -10,4 +10,10 @@
     </value>
   </records>
 
+  <records prefix="plone.bundles/plone-logged-in"
+           interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+    <value key="jscompilation">++plone++collective.library/plone-logged-in-compiled.min.js</value>
+    <value key="csscompilation">++plone++collective.library/plone-logged-in-compiled.css</value>
+  </records>
+
 </registry>
