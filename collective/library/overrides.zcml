@@ -21,6 +21,16 @@
     class=".browser.menu.ActionsMenu"
     />
 
+  <adapter for="* *"
+           name="plone.contentmenu.actions"
+           factory=".browser.menu.ActionsSubMenuItem"
+           provides="plone.app.contentmenu.interfaces.IContentMenuItem" />
+
+  <adapter for="* *"
+           name="plone.contentmenu.workflow"
+           factory=".browser.menu.WorkflowSubMenuItem"
+           provides="plone.app.contentmenu.interfaces.IContentMenuItem" />
+
   <browser:page
     name="plone_context_state"
     for="*"

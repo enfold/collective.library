@@ -9,3 +9,5 @@ Changelog
 - Sort before we convert to objects.
 
 - Only show content that user has permissions to see on PROPFIND
+
+- hide workflow and actions menu for proxied content
