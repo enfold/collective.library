@@ -11,3 +11,5 @@ Changelog
 - Only show content that user has permissions to see on PROPFIND
 
 - hide workflow and actions menu for proxied content
+
+- monkey patch base action to not work with proxied content
