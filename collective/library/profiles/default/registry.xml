@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<registry>
+
+  <records prefix="plone.resources/mockup-patterns-structure"
+           interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+    <value key="js">++plone++collective.library/structure/pattern.js</value>
+    <value key="url">++plone++collective.library/structure</value>
+    <value key="css">
+      <element>++plone++collective.library/structure/less/pattern.structure.less</element>
+    </value>
+  </records>
+
+</registry>

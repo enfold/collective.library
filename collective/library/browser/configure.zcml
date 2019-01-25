@@ -26,4 +26,10 @@
     renderer=".navigation.Renderer"
     addview=".navigation.AddForm" />
 
+  <plone:static
+      directory="static"
+      type="plone"
+      name="collective.library"
+      />
+
 </configure>

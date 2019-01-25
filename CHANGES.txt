@@ -13,3 +13,5 @@ Changelog
 - hide workflow and actions menu for proxied content
 
 - monkey patch base action to not work with proxied content
+
+- override folder contents

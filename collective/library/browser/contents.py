@@ -14,10 +14,9 @@ from plone.app.content.browser.vocabulary import _safe_callable_metadata
 from plone.app.content.browser.vocabulary import _unsafe_metadata
 from plone.app.content.browser.vocabulary import DEFAULT_PERMISSION_SECURE
 from plone.app.content.utils import json_dumps
+from plone.app.content.utils import json_loads
 from plone.app.contentlisting.interfaces import IContentListing
 from plone.app.contenttypes.browser.folder import FolderView as BaseFolderView
-from plone.app.layout.navigation.root import getNavigationRoot
-from plone.app.querystring import queryparser
 
 import six
 
@@ -25,6 +24,9 @@ import six
 class VocabularyView(VocabularyViewBase):
 
     def __call__(self, *args, **kwargs):
+        result = None
+        path = None
+        object = None
         referer = self.request.getHeader('Referer')
         if referer and 'folder_contents' in referer:
             name = self.request.get('name', None)
@@ -37,8 +39,26 @@ class VocabularyView(VocabularyViewBase):
                     portal = portal_api.get()
                     object = portal.restrictedTraverse(path)
                     if ILibraryContent.providedBy(object):
-                        return self.library_contents(object)
-        return super(VocabularyView, self).__call__(*args, **kwargs)
+                        result = self.library_contents(object)
+        if result is None:
+            result = super(VocabularyView, self).__call__(*args, **kwargs)
+        if object is not None:
+            contents = json_loads(result)
+            total = contents['total']
+            items = contents['results']
+            for item in items:
+                try:
+                    contained = object.restrictedTraverse(item['id'])
+                    if getattr(contained, 'is_content_proxy', False):
+                        item['is_proxied'] = True
+                    elif getattr(contained, 'is_folder_proxy', False):
+                        item['is_proxied'] = True
+                    else:
+                        item['is_proxied'] = False
+                except KeyError:
+                    item['is_proxied'] = True
+            result = json_dumps({"total": total, "results": items})
+        return result
 
     def library_contents(self, context):
         base_url = context.absolute_url()
