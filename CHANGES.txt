@@ -17,3 +17,5 @@ Changelog
 - override folder contents
 
 - add compiled js
+
+- remove edit action and add proxied class to folder contents row

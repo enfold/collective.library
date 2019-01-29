@@ -89,6 +89,7 @@ define([
 
       if (data.attributes.is_proxied) {
         self.$el.find('input').attr('disabled', true);
+        self.$el.addClass('proxied');
       }
 
       self.el.model = this.model;

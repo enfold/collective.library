@@ -124,12 +124,15 @@ define(['underscore'], function(_) {
       delete result['copyItem'];
       delete result['pasteItem'];
       delete result['selectAll'];
+      delete result['editItem'];
     }
 
     var typeToViewAction = app.options.typeToViewAction;
     var viewAction = typeToViewAction && typeToViewAction[model.portal_type] || '';
     result.openItem.url = model.getURL + viewAction;
-    result.editItem.url = model.getURL + '/edit';
+    if (!model.is_proxied) {
+      result.editItem.url = model.getURL + '/edit';
+    }
 
     return result;
   };
