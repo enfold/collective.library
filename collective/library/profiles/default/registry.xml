@@ -14,6 +14,7 @@
            interface='Products.CMFPlone.interfaces.IBundleRegistry'>
     <value key="jscompilation">++plone++collective.library/plone-logged-in-compiled.min.js</value>
     <value key="csscompilation">++plone++collective.library/plone-logged-in-compiled.css</value>
+    <value key="last_compilation">2019-01-31 00:00:00</value>
   </records>
 
 </registry>
