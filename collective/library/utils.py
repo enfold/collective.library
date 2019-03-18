@@ -82,7 +82,10 @@ def get_child_libraries(library):
     seen = dict()
 
     def get_children(lib):
-        query = {'to_id': intids.getId(lib),
+        lib_id = intids.queryId(lib)
+        if lib_id is None:
+            return
+        query = {'to_id': lib_id,
                  'from_attribute': constants.PARENT_LIBRARIES_ATTRIBUTE}
         for relation in relation_catalog.findRelations(query):
             child = relation.from_object

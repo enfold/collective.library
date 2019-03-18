@@ -19,3 +19,6 @@ Changelog
 - add compiled js
 
 - remove edit action and add proxied class to folder contents row
+
+- #2643812: Return if the library doesn't have an intids id.
+  [JL 2019-03-18]
