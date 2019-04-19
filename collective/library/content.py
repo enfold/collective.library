@@ -210,10 +210,22 @@ class BaseLibraryContainer(PasteBehaviourMixin, DAVCollectionMixin,
         else:
             results = local_results
         seen = dict()
-        results.sort(key=lambda b: b.sortable_title)
         for brain in results:
             portal_type = brain.portal_type
-            if objects:
+            _id = brain.id
+            if _id in seen:
+                continue
+            else:
+                seen[_id] = True
+                if portal_type == constants.LIBRARY_FOLDER_PORTAL_TYPE:
+                    folders.append(brain)
+                else:
+                    non_folders.append(brain)
+        folders.sort(key=lambda b: b.sortable_title)
+        non_folders.sort(key=lambda b: b.sortable_title)
+        if objects:
+            def _get_object(brain):
+                portal_type = brain.portal_type
                 if restricted:
                     item = brain.getObject()
                 else:
@@ -226,17 +238,10 @@ class BaseLibraryContainer(PasteBehaviourMixin, DAVCollectionMixin,
                             title=brain.Title).__of__(self)
                     else:
                         item = ContentProxy(item).__of__(self)
-            else:
-                item = brain
-            _id = brain.id
-            if _id in seen:
-                continue
-            else:
-                seen[_id] = True
-                if portal_type == constants.LIBRARY_FOLDER_PORTAL_TYPE:
-                    folders.append(item)
-                else:
-                    non_folders.append(item)
+
+                return item
+            folders = [_get_object(f) for f in folders]
+            non_folders = [_get_object(o) for o in non_folders]
         return folders + non_folders
 
     @security.protected(cmf_permissions.DeleteObjects)

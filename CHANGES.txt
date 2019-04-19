@@ -25,3 +25,6 @@ Changelog
 
 - #2696850: Set correct meta_type for library and library_folder.
   [JL 2019-04-19]
+
+- #2696860: Sort items after local and parent results have been combined.
+  [JL 2019-04-19]
