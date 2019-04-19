@@ -22,3 +22,6 @@ Changelog
 
 - #2643812: Return if the library doesn't have an intids id.
   [JL 2019-03-18]
+
+- #2696850: Set correct meta_type for library and library_folder.
+  [JL 2019-04-19]

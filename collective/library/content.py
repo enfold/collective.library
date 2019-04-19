@@ -61,6 +61,8 @@ class BaseLibraryContainer(PasteBehaviourMixin, DAVCollectionMixin,
                            DexterityContent):
     """ """
 
+    meta_type = 'Dexterity Container'
+
     __providedBy__ = FTIAwareSpecification()
     __allow_access_to_unprotected_subobjects__ = AttributeValidator()
 
