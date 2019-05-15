@@ -28,3 +28,7 @@ Changelog
 
 - #2696860: Sort items after local and parent results have been combined.
   [JL 2019-04-19]
+
+- #2651480: Fix issue with path generation for folder_contents dialogs
+  [JL 2019-05-15]
+
