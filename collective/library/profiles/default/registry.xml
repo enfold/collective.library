@@ -1,6 +1,11 @@
 <?xml version="1.0"?>
 <registry>
 
+  <records prefix="plone.resources/mockup-patterns-inlinevalidation"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++collective.library/inlinevalidation/pattern.js</value>
+  </records>
+
   <records prefix="plone.resources/mockup-patterns-structure"
            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
     <value key="js">++plone++collective.library/structure/pattern.js</value>
@@ -14,7 +19,7 @@
            interface='Products.CMFPlone.interfaces.IBundleRegistry'>
     <value key="jscompilation">++plone++collective.library/plone-logged-in-compiled.min.js</value>
     <value key="csscompilation">++plone++collective.library/plone-logged-in-compiled.css</value>
-    <value key="last_compilation">2019-05-15 00:00:00</value>
+    <value key="last_compilation">2019-05-22 00:00:00</value>
   </records>
 
 </registry>
