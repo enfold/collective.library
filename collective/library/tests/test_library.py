@@ -203,8 +203,8 @@ class TestParentLibraries(BaseTestCase):
 
     def test_library2_folder_contents(self):
         lib2 = self.portal['lib2']
-        expected_contents = ['folder3',
-                             'folder1',
+        expected_contents = ['folder1',
+                             'folder3',
                              'document1']
         content_ids = [c.id for c in lib2.get_content()]
         self.assertListEqual(content_ids, expected_contents)
@@ -213,24 +213,24 @@ class TestParentLibraries(BaseTestCase):
         lib3 = self.portal['lib3']
         expected_contents = ['folder1',
                              'folder3',
-                             'newsitem1',
-                             'document1']
+                             'document1',
+                             'newsitem1']
         content_ids = [c.id for c in lib3.get_content()]
         self.assertListEqual(content_ids, expected_contents)
 
     def test_library4_folder_contents(self):
         lib4 = self.portal['lib4']
-        expected_contents = ['folder5',
-                             'folder1',
+        expected_contents = ['folder1',
+                             'folder5',
                              'document1']
         content_ids = [c.id for c in lib4.get_content()]
         self.assertListEqual(content_ids, expected_contents)
 
     def test_library5_folder_contents(self):
         lib5 = self.portal['lib5']
-        expected_contents = ['folder6',
-                             'folder1',
+        expected_contents = ['folder1',
                              'folder5',
+                             'folder6',
                              'document1']
         content_ids = [c.id for c in lib5.get_content()]
         self.assertListEqual(content_ids, expected_contents)

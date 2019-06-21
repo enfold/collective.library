@@ -38,3 +38,7 @@ Changelog
   files, and use a separate view to validate their filenames
   [JL 2019-05-29]
 
+- Fix tests.
+  [JL 2019-06-21]
+
+
