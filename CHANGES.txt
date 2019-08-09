@@ -41,4 +41,5 @@ Changelog
 - Fix tests.
   [JL 2019-06-21]
 
-
+- #2836989: Don't show byline viewlet for folder proxies.
+  [JL 2019-08-09]
