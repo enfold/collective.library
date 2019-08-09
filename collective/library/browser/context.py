@@ -6,7 +6,7 @@ from plone.app.layout.globals.interfaces import IContextState
 from plone.memoize.view import memoize
 
 
-implementer(IContextState)
+@implementer(IContextState)
 class ContextState(PloneContextState):
 
     @property
