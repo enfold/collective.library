@@ -39,11 +39,12 @@ def library_added(obj, event):
 
     mapping = getMultiAdapter((obj, left_portlet_manager),
                               IPortletAssignmentMapping)
-    portlet_factory = getUtility(IFactory,
-                                 name='collective.library.portlets.navigation')
-    assignment = portlet_factory()
-    mapping['navigation'] = assignment
-
+    if 'navigation' not in mapping:
+        portlet_factory = getUtility(
+            IFactory,
+            name='collective.library.portlets.navigation')
+        assignment = portlet_factory()
+        mapping['navigation'] = assignment
 
 
 def content_added(obj, event):

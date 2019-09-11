@@ -43,3 +43,6 @@ Changelog
 
 - #2836989: Don't show byline viewlet for folder proxies.
   [JL 2019-08-09]
+
+- #2926580: Don't add navigation portlet to library if it already exists.
+  [JL 2019-09-11]
