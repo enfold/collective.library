@@ -178,33 +178,45 @@ class BaseLibraryContainer(PasteBehaviourMixin, DAVCollectionMixin,
         parent_results = list()
         if name is None or len(local_results) == 0:
             query = base_query.copy()
+            query['portal_type'] = test_types
+            folder_query = base_query.copy()
+            folder_query['portal_type'] = constants.LIBRARY_FOLDER_PORTAL_TYPE
             parent_uids = library_utils.get_parent_libraries(self, uids=True)
             parent_uids = [u for u in parent_uids if u != library_uid]
             adapter = queryAdapter(library, interface=ILibraryAdditionalQuery)
             if adapter is not None:
                 query.update(adapter())
+                folder_query.update(adapter.folder_query())
             query['library'] = parent_uids
+            folder_query['library'] = parent_uids
             if restricted:
-                tmp_parent_results = catalog.searchResults(**query)
+                tmp_parent_folder_results = catalog.searchResults(**folder_query)
             else:
-                tmp_parent_results = catalog.unrestrictedSearchResults(**query)
+                tmp_parent_folder_results = catalog.unrestrictedSearchResults(**folder_query)
 
-            for brain in tmp_parent_results:
-                if brain.portal_type == constants.LIBRARY_FOLDER_PORTAL_TYPE:
-                    test_query = query.copy()
-                    if 'id' in test_query:
-                        del test_query['id']
-                    test_query['path_in_library'] = brain.obj_path_in_library
-                    test_query['portal_type'] = test_types
-                    if restricted:
-                        test_results = catalog.searchResults(**test_query)
-                    else:
-                        test_results = catalog.unrestrictedSearchResults(
-                            **test_query)
-                    if test_results:
-                        parent_results.append(brain)
+            for brain in tmp_parent_folder_results:
+                test_query = query.copy()
+                if 'id' in test_query:
+                    del test_query['id']
+                test_query['path_in_library'] = brain.obj_path_in_library
+                test_query['portal_type'] = test_types
+                if restricted:
+                    test_results = catalog.searchResults(**test_query)
                 else:
+                    test_results = catalog.unrestrictedSearchResults(
+                        **test_query)
+                if test_results:
                     parent_results.append(brain)
+
+            if not folders_only:
+                if restricted:
+                    tmp_parent_results = catalog.searchResults(**query)
+                else:
+                    tmp_parent_results = catalog.unrestrictedSearchResults(**query)
+
+                for brain in tmp_parent_results:
+                    parent_results.append(brain)
+
         if len(parent_results):
             results = local_results + parent_results
         else:

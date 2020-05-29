@@ -46,3 +46,6 @@ Changelog
 
 - #2926580: Don't add navigation portlet to library if it already exists.
   [JL 2019-09-11]
+
+- #3354799: Use separate search for parent folders.
+  [JL 2020-05-29]
