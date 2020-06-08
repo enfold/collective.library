@@ -1,3 +1,4 @@
+import logging
 from Acquisition import aq_inner
 from plone.app.content.browser import contents
 from plone.app.uuid.utils import uuidToCatalogBrain
