@@ -5,6 +5,7 @@ from plone.app.uuid.utils import uuidToCatalogBrain
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 
+logger = logging.getLogger(__name__)
 
 OriginalContentsBaseAction = contents.ContentsBaseAction
 
@@ -71,5 +72,7 @@ class LibraryContentsBaseAction(OriginalContentsBaseAction):
         self.finish()
         return self.message(selection)
 
-
+# plone.app.content.browser.contents.ContentsBaseAction is patched to prevent
+# actions on proxied content
 contents.ContentsBaseAction = LibraryContentsBaseAction
+logger.warn('Patched plone.app.content.browser.contents.ContentsBaseAction')
