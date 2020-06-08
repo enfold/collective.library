@@ -52,3 +52,6 @@ Changelog
 
 - #3366142: Remove DelegatingSpecification.
   [JL 2020-06-08]
+
+- #3366142: Add doc strings to classes.
+  [JL 2020-06-08]

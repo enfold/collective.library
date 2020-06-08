@@ -352,7 +352,7 @@ class BaseLibraryContainer(PasteBehaviourMixin, DAVCollectionMixin,
 
 @implementer(ILibrary)
 class Library(BaseLibraryContainer):
-    """ """
+    """ Library """
 
     security = ClassSecurityInfo()
 
@@ -362,7 +362,7 @@ InitializeClass(Library)
 
 @implementer(ILibraryFolder)
 class LibraryFolder(BaseLibraryContainer):
-    """ """
+    """ Library folder """
 
     security = ClassSecurityInfo()
 
@@ -372,7 +372,7 @@ InitializeClass(LibraryFolder)
 
 @implementer(ILibraryFolderProxy)
 class LibraryFolderProxy(BaseLibraryContainer):
-    """ """
+    """ Library folder Proxy """
 
     is_folder_proxy = True
 
@@ -466,6 +466,7 @@ InitializeClass(LibraryFolderProxy)
 
 
 class ContentProxy(SimpleItem):
+    """ Library content proxy """
 
     # __providedBy__ = DelegatingSpecification()
 

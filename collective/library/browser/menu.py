@@ -12,6 +12,7 @@ from plone.app.contentmenu.menu import WorkflowSubMenuItem as OriginalWorkflowSu
 
 @implementer(IActionsMenu)
 class ActionsMenu(OriginalActionsMenu):
+    """ collective.library actions menu override """
 
     def getMenuItems(self, context, request):
         items = super(ActionsMenu, self).getMenuItems(context, request)
@@ -26,6 +27,7 @@ class ActionsMenu(OriginalActionsMenu):
 
 @implementer(IActionsSubMenuItem)
 class ActionsSubMenuItem(OriginalActionsSubMenuItem):
+    """ collective.library actions submenu item override """
 
     def available(self):
         result = super(ActionsSubMenuItem, self).available()
@@ -37,6 +39,7 @@ class ActionsSubMenuItem(OriginalActionsSubMenuItem):
 
 @implementer(IWorkflowMenu)
 class WorkflowMenu(OriginalWorkflowMenu):
+    """ collective.library workflow menu override """
 
     def getMenuItems(self, context, request):
         items = super(WorkflowMenu, self).getMenuItems(context, request)
@@ -49,6 +52,7 @@ class WorkflowMenu(OriginalWorkflowMenu):
 
 @implementer(IWorkflowSubMenuItem)
 class WorkflowSubMenuItem(OriginalWorkflowSubMenuItem):
+    """ collective.library workflow submenu item """
 
     def available(self):
         result = super(WorkflowSubMenuItem, self).available()

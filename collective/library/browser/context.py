@@ -8,6 +8,7 @@ from plone.memoize.view import memoize
 
 @implementer(IContextState)
 class ContextState(PloneContextState):
+    """ collective.library plone context state override """
 
     @property
     def is_content_proxy(self):

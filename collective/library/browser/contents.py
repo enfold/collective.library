@@ -22,6 +22,7 @@ import six
 
 
 class VocabularyView(VocabularyViewBase):
+    """ Library folder contents vocabulary view """
 
     def __call__(self, *args, **kwargs):
         result = None
@@ -136,6 +137,7 @@ class VocabularyView(VocabularyViewBase):
 
 
 class FolderContentsView(FolderContentsViewBase):
+    """ Library folder contents view """
 
     def get_options(self):
         options = super(FolderContentsView, self).get_options()
@@ -146,6 +148,7 @@ class FolderContentsView(FolderContentsViewBase):
 
 
 class FolderListing(BrowserView):
+    """ Library folder listing view """
 
     def __call__(self, batch=False, b_size=20, b_start=0, orphan=0, **kw):
         context = self.context
@@ -155,6 +158,7 @@ class FolderListing(BrowserView):
 
 
 class FolderView(BaseFolderView):
+    """ Library folder view """
 
     def get_url(self, item):
         parent_url = self.context.absolute_url()

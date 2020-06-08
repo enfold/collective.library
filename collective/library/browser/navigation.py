@@ -17,11 +17,13 @@ class INavigationPortlet(IPortletDataProvider):
 
 @implementer(INavigationPortlet)
 class Assignment(base.Assignment):
+    """ collective.library navigation portlet assignment override """
 
     title = u'Navigation'
 
 
 class Renderer(base.Renderer):
+    """ collective.library navigation portlet renderer override """
 
     def __init__(self, context, request, view, manager, data):
         base.Renderer.__init__(self, context, request, view, manager, data)
@@ -80,6 +82,7 @@ class Renderer(base.Renderer):
 
 
 class AddForm(base.NullAddForm):
+    """ collective.library navigation portlet add form override """
 
     def create(self):
         return Assignment()

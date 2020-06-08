@@ -4,6 +4,7 @@ from plone.app.layout.viewlets.content import DocumentBylineViewlet \
 
 
 class DocumentBylineViewlet(BaseDocumentBylineViewlet):
+    """ collective.library folder proxy byline viewlet """
 
     def show(self):
         return False
