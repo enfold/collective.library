@@ -46,9 +46,12 @@
                 item_is_event python:view.is_event(obj);
                 item_has_image python:item.getIcon;
                 item_type_class python:('contenttype-' + view.normalizeString(item_type)) if showicons else '' ;
+                item_real_url python:view.get_real_url(obj);
                 item_parent_real_path python:'/'.join(obj.aq_parent.getPhysicalPath());
                 context_path python:'/'.join(context.getPhysicalPath());
-                item_inherited_class python:'local-content' if (item_parent_real_path == context_path) else 'inherited-content' ;
+                item_is_alias python: view.is_alias(obj);
+                item_inherited python:item_parent_real_path != context_path;
+                item_inherited_class python:'local-content' if not item_inherited else 'inherited-content' ;
                 ">
               <metal:block define-slot="entry">
                 <article class="entry">
@@ -70,6 +73,13 @@
                          tal:condition="python: item_has_image and thumb_scale_list">
                          <img tal:replace="structure python:image_scale.tag(item, 'image', scale=thumb_scale_list, css_class=img_class)" />
                       </a>
+                      <div tal:condition="python:item_inherited or item_is_alias">
+                        <span>Source: </span>
+                        <a tal:attributes="href item_real_url;
+                                              title item_type"
+                           tal:content="item_real_url">Item URL
+                        </a>
+                      </div>
                     </span>
                     <metal:block metal:define-macro="document_byline">
                       <div class="documentByLine">

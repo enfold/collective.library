@@ -13,6 +13,11 @@
         <em><%- id %></em>
       <% } %>
     </a>
+    <% if(real_obj_path && (real_obj_path !== getURL)){ %>
+      <div class="pat-tooltip " title="" data-pat-tooltip="<%- JSON.stringify({html:'true',placement:'right'}) %>" data-placement="right" data-delay="<%- JSON.stringify({ 'hide': 2000 }) %>" data-original-title="<span>Source: </span><a href='<%- real_obj_path %>'><%- real_obj_path %></a>">
+        <span class="glyphicon glyphicon-question-sign"></span>
+      </div>
+    <% } %>
     <% if(expired){ %>
       <span class="plone-item-expired"><%- _t('Expired') %></span>
     <% } %>

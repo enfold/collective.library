@@ -3,6 +3,10 @@ from .. import constants
 from ..interfaces import ILibraryContent
 from AccessControl import getSecurityManager
 from Acquisition import aq_base
+from Acquisition import aq_inner
+from afsoc.plone.interfaces import IPublication
+from collective.alias.interfaces import IAlias
+from collective.library.content import ContentProxy
 from Products.Five import BrowserView
 from Products.MimetypesRegistry.MimeTypeItem import guess_icon_path
 from plone.api import portal as portal_api
@@ -17,7 +21,8 @@ from plone.app.content.utils import json_dumps
 from plone.app.content.utils import json_loads
 from plone.app.contentlisting.interfaces import IContentListing
 from plone.app.contenttypes.browser.folder import FolderView as BaseFolderView
-
+from zope.component import getUtility
+from zope.intid.interfaces import IIntIds
 import six
 
 
@@ -128,6 +133,20 @@ class VocabularyView(VocabularyViewBase):
                         item[key] = '/'.join([
                             base_path,
                             guess_icon_path(ctype[0])])
+                if key == "real_obj_path":
+                    # XXX: I am unable to access metadata in the brain object
+                    #      such as 'object_provides', so I have to get the
+                    #      real object
+                    obj = vocab_item.getObject()
+                    obj = aq_inner(obj)
+                    if IAlias.providedBy(obj):
+                        obj = obj._aliasTarget.to_object
+                    elif isinstance(obj, ContentProxy):
+                        obj = obj._proxied
+                    if obj:
+                        item[key] = obj.absolute_url()
+                    else:
+                        item[key] = ""
             items.append(item)
 
         return json_dumps({
@@ -159,6 +178,20 @@ class FolderListing(BrowserView):
 
 class FolderView(BaseFolderView):
     """ Library folder view """
+
+    def get_real_url(self, item):
+        url = ""
+        if IAlias.providedBy(item):
+            intid = item._aliasTarget.to_id
+            intids = getUtility(IIntIds)
+            obj = intids.getObject(intid)
+            url = obj.absolute_url()
+        elif IPublication.providedBy(item):
+            url = item.absolute_url()
+        return url
+
+    def is_alias(self, item):
+        return IAlias.providedBy(item)
 
     def get_url(self, item):
         parent_url = self.context.absolute_url()

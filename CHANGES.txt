@@ -57,3 +57,7 @@ Changelog
   [JL 2020-06-08]
 
 - #3366142: Add logging for patch
+  [JL 2020-06-08]
+
+- #2536097: Add cues for source of file to folder listing and folder contents.
+  [JL 2020-06-30]

@@ -82,4 +82,13 @@
     profile="collective.library:default">
   </upgradeStep>
 
+  <upgradeStep
+    source="1007"
+    destination="1008"
+    title="Upgrade to 1008"
+    description="Upgrade to 1008"
+    handler=".upgrades.upgrade_to_1008"
+    profile="collective.library:default">
+  </upgradeStep>
+
 </configure>
