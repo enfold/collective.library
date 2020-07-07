@@ -17,6 +17,10 @@
                    zope.lifecycleevent.interfaces.IObjectAddedEvent"
               handler=".event_subscribers.content_added"/>
 
+  <subscriber for="Products.CMFCore.interfaces.IContentish
+                   zope.lifecycleevent.interfaces.IObjectMovedEvent"
+              handler=".event_subscribers.content_moved"/>
+
   <subscriber for="collective.library.interfaces.ILibrary
                    zope.lifecycleevent.interfaces.IObjectModifiedEvent"
              handler=".event_subscribers.library_modified" />
