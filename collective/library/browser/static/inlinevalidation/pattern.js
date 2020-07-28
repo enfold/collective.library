@@ -173,7 +173,7 @@ define([
     init: function () {
 
       this.$el.find(
-          'input[type="text"], ' +
+          'input[type="text"]:not([readonly]), ' +
           'input[type="password"], ' +
           'input[type="checkbox"], ' +
           'select, ' +

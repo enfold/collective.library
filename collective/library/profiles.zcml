@@ -91,4 +91,13 @@
     profile="collective.library:default">
   </upgradeStep>
 
+  <upgradeStep
+    source="1008"
+    destination="1009"
+    title="Upgrade to 1009"
+    description="Upgrade to 1009"
+    handler=".upgrades.upgrade_to_1009"
+    profile="collective.library:default">
+  </upgradeStep>
+
 </configure>

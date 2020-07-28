@@ -4,6 +4,8 @@ Changelog
 1.0 (unreleased)
 ----------------
 
+- #3417177: Avoid inlinevalidation for datetime picker
+
 - #3411332: When moving an item, update the library UID
 
 - #2651480: Fix issue with path generation for folder_contents dialogs
