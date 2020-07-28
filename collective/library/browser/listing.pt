@@ -47,6 +47,7 @@
                 item_has_image python:item.getIcon;
                 item_type_class python:('contenttype-' + view.normalizeString(item_type)) if showicons else '' ;
                 item_real_url python:view.get_real_url(obj);
+                item_real_path python:'/'.join(obj.getPhysicalPath());
                 item_parent_real_path python:'/'.join(obj.aq_parent.getPhysicalPath());
                 context_path python:'/'.join(context.getPhysicalPath());
                 item_is_alias python: view.is_alias(obj);
@@ -77,7 +78,7 @@
                         <span>Source: </span>
                         <a tal:attributes="href item_real_url;
                                               title item_type"
-                           tal:content="item_real_url">Item URL
+                           tal:content="item_real_path">Item URL
                         </a>
                       </div>
                     </span>

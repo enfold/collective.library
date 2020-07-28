@@ -180,7 +180,7 @@ class FolderView(BaseFolderView):
     """ Library folder view """
 
     def get_real_url(self, item):
-        url = ""
+        url = item.absolute_url()
         if IAlias.providedBy(item):
             intid = item._aliasTarget.to_id
             intids = getUtility(IIntIds)
