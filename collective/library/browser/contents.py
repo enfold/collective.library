@@ -4,8 +4,6 @@ from ..interfaces import ILibraryContent
 from AccessControl import getSecurityManager
 from Acquisition import aq_base
 from Acquisition import aq_inner
-from afsoc.plone.interfaces import IPublication
-from collective.alias.interfaces import IAlias
 from collective.library.content import ContentProxy
 from Products.Five import BrowserView
 from Products.MimetypesRegistry.MimeTypeItem import guess_icon_path
@@ -24,6 +22,13 @@ from plone.app.contenttypes.browser.folder import FolderView as BaseFolderView
 from zope.component import getUtility
 from zope.intid.interfaces import IIntIds
 import six
+
+try:
+    from collective.alias.interfaces import IAlias
+except ImportError:
+    from zope.interface import Interface
+    class IAlias(Interface):
+        pass
 
 
 class VocabularyView(VocabularyViewBase):
@@ -186,8 +191,6 @@ class FolderView(BaseFolderView):
             intids = getUtility(IIntIds)
             obj = intids.getObject(intid)
             url = obj.absolute_url()
-        elif IPublication.providedBy(item):
-            url = item.absolute_url()
         return url
 
     def is_alias(self, item):
