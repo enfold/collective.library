@@ -1,2 +1,10 @@
 *.py?
 *.egg-info
+.installed.cfg
+.mr.developer.cfg
+pyvenv.cfg
+
+bin/
+develop-eggs/
+lib/
+parts/
