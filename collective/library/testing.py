@@ -5,7 +5,7 @@ from plone.app.testing import IntegrationTesting
 from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
-from plone.testing import z2
+from plone.testing.zope import installProduct
 from zope.configuration import xmlconfig
 
 try:
@@ -24,7 +24,7 @@ class LibraryLayer(PloneSandboxLayer):
         import collective.library
         xmlconfig.file('configure.zcml', collective.library,
                        context=configurationContext)
-        z2.installProduct(app, 'collective.library')
+        installProduct(app, 'collective.library')
 
     def setUpPloneSite(self, portal):
         # install into the Plone site

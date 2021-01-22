@@ -1,5 +1,5 @@
 import unittest
-from plone.testing import z2
+from plone.testing.zope import login
 from plone.app.testing import SITE_OWNER_NAME
 
 from collective.library.testing import LIBRARY_INTEGRATION_TESTING
@@ -18,4 +18,4 @@ class BaseTestCase(unittest.TestCase):
         """
         helper method to login as site admin
         """
-        z2.login(self.app['acl_users'], SITE_OWNER_NAME)
+        login(self.app['acl_users'], SITE_OWNER_NAME)
