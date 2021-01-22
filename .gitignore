@@ -2,9 +2,11 @@
 *.egg-info
 .installed.cfg
 .mr.developer.cfg
+default.profraw
 pyvenv.cfg
 
 bin/
 develop-eggs/
 lib/
 parts/
+var/
