@@ -4,6 +4,8 @@ Changelog
 1.0 (unreleased)
 ----------------
 
+- Added compatibility with Zope 4 and Python 3.5-3.8
+
 - #2536097: Fix path for inherited folders and replace the URL with the path
 
 - #3417177: Avoid inlinevalidation for datetime picker

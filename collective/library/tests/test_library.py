@@ -312,9 +312,9 @@ class TestParentLibraries(BaseTestCase):
     def test_library_propfind(self):
         lib1 = self.portal['lib1']
         propfind = lib1.PROPFIND(self.request, self.request.response)
-        self.assertEquals(propfind.status, 207)
-        self.assertIn('<n:title>library 1</n:title>', propfind.body)
-        self.assertIn('<n:title>library folder 1</n:title>', propfind.body)
-        self.assertIn('<n:title>library folder 2</n:title>', propfind.body)
-        self.assertIn('<n:title>library folder 4</n:title>', propfind.body)
-        self.assertIn('<n:title>document 1</n:title>', propfind.body)
+        self.assertEqual(propfind.status, 207)
+        self.assertIn(b'<n:title>library 1</n:title>', propfind.body)
+        self.assertIn(b'<n:title>library folder 1</n:title>', propfind.body)
+        self.assertIn(b'<n:title>library folder 2</n:title>', propfind.body)
+        self.assertIn(b'<n:title>library folder 4</n:title>', propfind.body)
+        self.assertIn(b'<n:title>document 1</n:title>', propfind.body)

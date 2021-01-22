@@ -1,5 +1,6 @@
 <configure
-    xmlns="http://namespaces.zope.org/genericsetup">
+    xmlns="http://namespaces.zope.org/genericsetup"
+    i18n_domain="collective_library">
 
   <registerProfile
       name="default"

@@ -47,9 +47,14 @@ try:
 except ImportError:
     ITranslatable = None
 
-import new
 import six
 import types
+
+try:
+    import new
+except ImportError:
+    new = None
+    
 
 _marker = object()
 
@@ -527,7 +532,10 @@ class ContentProxy(SimpleItem):
 
         proxied = self._proxied
 
-        self._v_class = klass = new.classobj('ContentProxy', (ContentProxy, aq_base(proxied).__class__), {})
+        if new is not None:  # Python 2.7
+            self._v_class = klass = new.classobj('ContentProxy', (ContentProxy, aq_base(proxied).__class__), {})
+        else:
+            self._v_class = klass = type('ContentProxy', (ContentProxy, aq_base(proxied).__class__), {})
         return klass
 
     @property

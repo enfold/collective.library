@@ -75,4 +75,4 @@ class LibraryContentsBaseAction(OriginalContentsBaseAction):
 # plone.app.content.browser.contents.ContentsBaseAction is patched to prevent
 # actions on proxied content
 contents.ContentsBaseAction = LibraryContentsBaseAction
-logger.warn('Patched plone.app.content.browser.contents.ContentsBaseAction')
+logger.warning('Patched plone.app.content.browser.contents.ContentsBaseAction')
