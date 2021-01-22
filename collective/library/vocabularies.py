@@ -3,17 +3,16 @@ from . import constants
 from plone.app.vocabularies.catalog import CatalogSource
 from zope.component import queryAdapter
 from zope.interface import Interface
-from zope.interface import implements
+from zope.interface import implementer
 from zope.schema.interfaces import IContextSourceBinder
 
 
 class ILibraryQuery(Interface):
     """"""
 
-
+@implementer(IContextSourceBinder)
 class LibrarySource(object):
     """"""
-    implements(IContextSourceBinder)
 
     def __init__(self, **query):
         self.query = query
