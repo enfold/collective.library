@@ -29,7 +29,9 @@ setup(name='collective.library',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'six',
           'plone.api',
+          'plone.app.iterate',
       ],
       extras_require={
           'test': [
