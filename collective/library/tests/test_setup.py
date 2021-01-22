@@ -4,7 +4,10 @@ from .base import BaseTestCase
 class TestInstall(BaseTestCase):
 
     def setUp(self):
+        from Products.CMFCore.utils import getToolByName
         super(TestInstall, self).setUp()
+        installer = getToolByName(self.portal, 'portal_quickinstaller')
+        installer.installProducts(['collective.library'])
 
     def test_product_installed(self):
         from Products.CMFCore.utils import getToolByName
@@ -61,6 +64,7 @@ class TestUninstall(BaseTestCase):
         super(TestUninstall, self).setUp()
         from Products.CMFCore.utils import getToolByName
         installer = getToolByName(self.portal, 'portal_quickinstaller')
+        installer.installProducts(['collective.library'])
         installer.uninstallProducts(['collective.library'])
 
     def test_product_uninstalled(self):
