@@ -23,13 +23,6 @@ from zope.component import getUtility
 from zope.intid.interfaces import IIntIds
 import six
 
-try:
-    from collective.alias.interfaces import IAlias
-except ImportError:
-    from zope.interface import Interface
-    class IAlias(Interface):
-        pass
-
 
 class VocabularyView(VocabularyViewBase):
     """ Library folder contents vocabulary view """
@@ -144,9 +137,7 @@ class VocabularyView(VocabularyViewBase):
                     #      real object
                     obj = vocab_item.getObject()
                     obj = aq_inner(obj)
-                    if IAlias.providedBy(obj):
-                        obj = obj._aliasTarget.to_object
-                    elif isinstance(obj, ContentProxy):
+                    if isinstance(obj, ContentProxy):
                         obj = obj._proxied
                     if obj:
                         item[key] = obj.absolute_url()
@@ -186,15 +177,7 @@ class FolderView(BaseFolderView):
 
     def get_real_url(self, item):
         url = item.absolute_url()
-        if IAlias.providedBy(item):
-            intid = item._aliasTarget.to_id
-            intids = getUtility(IIntIds)
-            obj = intids.getObject(intid)
-            url = obj.absolute_url()
         return url
-
-    def is_alias(self, item):
-        return IAlias.providedBy(item)
 
     def get_url(self, item):
         parent_url = self.context.absolute_url()
