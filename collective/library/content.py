@@ -518,7 +518,7 @@ class ContentProxy(SimpleItem):
             value = aq_base(value).__of__(self)
 
         if isinstance(value, types.MethodType):
-            return types.MethodType(value.__func__, self, type(self))
+            return types.MethodType(value.__func__, self)
 
         return value
 
