@@ -34,6 +34,7 @@ from plone.dexterity.filerepresentation import DAVCollectionMixin
 from plone.dexterity.interfaces import IDexterityContainer
 from webdav.davcmds import DAVProps
 from webdav.davcmds import PropFind
+from webdav.NullResource import NullResource
 from zope.component import queryAdapter
 from zope.component import queryUtility
 from zope.interface import implementer
@@ -119,6 +120,20 @@ class BaseLibraryContainer(PasteBehaviourMixin, DAVCollectionMixin,
                 raise KeyError(name)
 
         return ob
+
+    def __getitem__(self, key):
+        value = self._getOb(key, None)
+        if value is not None:
+            return value
+
+        # WebDAV PUT support
+        if hasattr(self, 'REQUEST'):
+            request = self.REQUEST
+            method = request.get('REQUEST_METHOD', 'GET')
+            if (getattr(request, 'maybe_webdav_client', False)
+               and method not in ('GET', 'POST')):
+                return NullResource(self, key, request).__of__(self)
+        raise KeyError(key)
 
     def __getattr__(self, name):
         if name.startswith('__') or name == '_v__providedBy__':
