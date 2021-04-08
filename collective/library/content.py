@@ -88,6 +88,8 @@ class BaseLibraryContainer(PasteBehaviourMixin, DAVCollectionMixin,
 
     isPrincipiaFolderish = 1
 
+    _ordering = 'unordered'
+
     # make sure CMFCatalogAware's manage_options don't take precedence
     manage_options = PortalFolderBase.manage_options
 
