@@ -3,6 +3,7 @@
 @import "@{bowerPath}/bootstrap/less/glyphicons.less";
 @import "@{mockuplessPath}/ui.less";
 @import "@{mockupPath}/tooltip/pattern.tooltip.less";
+@import "@{mockupPath}/datatables/pattern.datatables.less";
 
 @import "@{bowerPath}/bootstrap/less/mixins.less";
 @import "@{bowerPath}/bootstrap/less/utilities.less";
@@ -22,7 +23,6 @@
 
 
 .pat-structure {
-
     .fade:extend(.fade all){}
     .collapse:extend(.collapse all){}
     .collapsing:extend(.collapsing all){}
@@ -67,21 +67,43 @@
         .btn-sm();
     }
 
+    .btn.has-filter {
+        .btn-info();
+    }
+    input.has-filter {
+        border: 1px solid @btn-info-border;
+    }
+
+    .pagination{
+        vertical-align: middle;
+    }
+
+    div.pagination{
+        margin-left: 10px;
+    }
+
     .navbar {
         position: sticky;
         top: 0;
         z-index: 10;
         background-color: #fafafa;
-        border-bottom: 1px solid #ccc;
-        border-radius: 0;
+
+        border: none;
+        min-height: auto;
+        margin: 0;
+
 
         &>a.btn:last-of-type,
         .btn-group {
             margin-right: 1em;
         }
         #filter {
-            width: 200px;
+            width: 20em;
             float: right;
+
+            .btn-queryfilter {
+                margin-left: 1em;
+            }
         }
         &>a.btn, .btn-group, #filter {
             margin-bottom: 0.5em;
@@ -148,19 +170,34 @@
             height: 31px;
         }
     }
-    .alert.status{
-        margin-bottom: 5px;
-        padding: 5px;
+    .fc-status {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1em;
+        padding: 0.5em;
         color: @plone-link-color;
+        .fc-status-text {
+            flex-grow: 1;
+        }
+        .btn {
+            margin-left: 1em;
+        }
+
     }
 
     .popover.upload{
         max-width: 650px;
     }
 
+    .popover.rearrange{
+        max-width: 400px;
+    }
+
     .upload-container .upload-area{
         width: 500px;
     }
+
+    li.disabled a {pointer-events: none;}
 
     /* button overrides to make it look
        more streamlined */
@@ -252,24 +289,9 @@
     .itemRow.default-page .title > *:first-child:before{
         content: '*';
         color: red;
+        position: absolute;
+        text-indent: -4px;
     }
-    .itemRow {
-      div.pat-tooltip {
-        float: right;
-        margin-left: 10px;
-        span.glyphicon{
-          color: #696969;
-        }
-      }
-      div.tooltip-inner {
-          max-width: none;
-          cursor: default;
-          a {
-            color: white;
-          }
-      }
-    }
-
 
 }
 
@@ -345,7 +367,7 @@
 .popover.attribute-columns{
     ul{
         list-style: none;
-        margin: 0;
+        margin: 0 0 1ex 0;
         padding: 0;
 
         li{
@@ -355,8 +377,16 @@
             border-bottom: none;
             padding: 3px 7px;
 
+            &:last-child {
+                border-bottom: 1px solid #DDD;
+            }
+
             label{
                 margin-bottom: 0;
+
+                input[type="checkbox"] {
+                    margin-right: 1ex;
+                }
             }
         }
 

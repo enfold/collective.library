@@ -19,7 +19,14 @@
            interface='Products.CMFPlone.interfaces.IBundleRegistry'>
     <value key="jscompilation">++plone++collective.library/plone-logged-in-compiled.min.js</value>
     <value key="csscompilation">++plone++collective.library/plone-logged-in-compiled.css</value>
-    <value key="last_compilation">2020-06-30 00:00:00</value>
+    <value key="last_compilation">2021-04-07 00:00:00</value>
+  </records>
+
+  <records prefix="plone.bundles/plone-editor-tools"
+           interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+    <value key="jscompilation">++plone++collective.library/plone-editor-tools-compiled.min.js</value>
+    <value key="csscompilation">++plone++collective.library/plone-editor-tools-compiled.css</value>
+    <value key="last_compilation">2021-04-07 00:00:00</value>
   </records>
 
 </registry>
