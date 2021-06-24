@@ -4,27 +4,30 @@ from setuptools import setup
 
 import os
 
-version = '1.0'
+long_description = (
+    open('CHANGES.txt').read()
+    + '\n'
+    )
 
 setup(name='collective.library',
-      version=version,
-      description="",
-      long_description='',
+      version="1.0",
+      description="Collective Library",
+      long_description=long_description,
       # Get more strings from
       # https://pypi.python.org/pypi?:action=list_classifiers
       classifiers=[
           'Framework :: Plone',
           'Framework :: Plone :: 5.2',
-          'Programming Language :: Python :: 2',
-          'Programming Language :: Python :: 2.7',
           'Programming Language :: Python :: 3',
           'Programming Language :: Python :: 3.5',
           'Programming Language :: Python :: 3.6',
           'Programming Language :: Python :: 3.7',
           'Programming Language :: Python :: 3.8',
           'Programming Language :: Python :: Implementation :: CPython',
+          'License :: OSI Approved :: GNU General Public License (GPL)',
+          'Development Status :: 5 - Production/Stable',
       ],
-      keywords='',
+      keywords='collective library plone',
       author='Enfold Systems Inc.',
       author_email='info@enfoldsystems.com',
       url='http://www.enfoldsystems.com',
