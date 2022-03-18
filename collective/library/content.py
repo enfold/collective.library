@@ -371,6 +371,21 @@ class BaseLibraryContainer(PasteBehaviourMixin, DAVCollectionMixin,
         RESPONSE.setBody(result)
         return RESPONSE
 
+    @security.protected(cmf_permissions.AddPortalFolders)
+    def manage_addFolder(self, id, title='', REQUEST=None):
+        """ """
+        self.invokeFactory(type_name=constants.LIBRARY_FOLDER_PORTAL_TYPE,
+                           id=id)
+        ob = self._getOb(id)
+        ob.setTitle(title)
+        try:
+            ob.reindexObject()
+        except AttributeError:
+            pass
+
+        if REQUEST is not None:
+            return self.manage_main(self, REQUEST, update_menu=1)
+
 
 @implementer(ILibrary)
 class Library(BaseLibraryContainer):

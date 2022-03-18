@@ -4,7 +4,7 @@ Changelog
 1.1 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Have manage_addFolder add the correct folder type.
 
 
 1.0 (2021-06-24)
