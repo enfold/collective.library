@@ -42,3 +42,6 @@ def upgrade_to_1008(portal_setup):
 def upgrade_to_1009(portal_setup):
     portal_setup.runImportStepFromProfile('profile-collective.library:default',
                                           'plone.app.registry')
+def upgrade_to_1010(portal_setup):
+    portal_setup.runImportStepFromProfile('profile-collective.library:default',
+                                          'plone.app.registry')

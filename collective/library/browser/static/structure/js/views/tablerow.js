@@ -7,10 +7,9 @@ define([
   'text!mockup-patterns-structure-url/templates/tablerow.xml',
   'mockup-utils',
   'translate',
-  'moment',
-  'pat-registry'
+  'moment'
 ], function($, _, Backbone, Nav, ActionMenuView, TableRowTemplate, utils, _t,
-            moment, registry) {
+            moment) {
   'use strict';
 
   var TableRowView = Backbone.View.extend({
@@ -105,7 +104,6 @@ define([
         canMove: canMove
       });
 
-      registry.scan(this.$el);
       $('.actionmenu-container', self.$el).append(self.menu.render().el);
       return this;
     },
