@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.2 (unreleased)
+1.2 (2022-08-11)
 ----------------
 
 - #4432285: Fix issue with folder_contents loosing its context when 
