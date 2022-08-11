@@ -10,7 +10,7 @@ long_description = (
     )
 
 setup(name='collective.library',
-      version="1.2",
+      version="1.3.dev0",
       description="Collective Library",
       long_description=long_description,
       # Get more strings from
