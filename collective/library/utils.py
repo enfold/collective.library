@@ -20,8 +20,12 @@ def get_ancestor(obj, portal_type):
     if (portal_type == constants.LIBRARY_FOLDER_PORTAL_TYPE
             and parent_type == constants.LIBRARY_PORTAL_TYPE):
         return None
-    for parent in aq_chain(aq_inner(obj)):
+    for parent in aq_chain(aq_inner(obj))[1:]:
         parent_type = base_getattr(parent, 'portal_type', '')
+        if parent_type not in (constants.LIBRARY_PORTAL_TYPE,
+                               constants.LIBRARY_FOLDER_PORTAL_TYPE,
+                               constants.LIBRARY_FOLDER_PROXY_PORTAL_TYPE):
+            break
         if parent_type == portal_type:
             return parent
         if (portal_type == constants.LIBRARY_FOLDER_PORTAL_TYPE
