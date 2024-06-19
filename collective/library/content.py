@@ -56,7 +56,10 @@ try:
 except ImportError:
     new = None
     
-
+VALID_SORT_FIELDS = ('CreationDate', 'Date', 'EffectiveDate', 'ExpirationDate', 'ModificationDate', 'Type', 'UID',
+                     'created', 'effective', 'expires', 'id', 'getId', 'modified', 'portal_type', 'review_state',
+                     'sortable_title')
+DEFAULT_SORT_FIELD = 'sortable_title'
 _marker = object()
 
 
@@ -174,9 +177,10 @@ class BaseLibraryContainer(PasteBehaviourMixin, DAVCollectionMixin,
                  if t != constants.LIBRARY_PORTAL_TYPE]
 
         if 'sort_on' not in base_query:
-            base_query['sort_on'] = 'sortable_title'
-        elif base_query['sort_on'] == 'getObjPositionInParent':
-            base_query['sort_on'] = 'sortable_title'
+            base_query['sort_on'] = DEFAULT_SORT_FIELD
+        elif base_query['sort_on'] not in VALID_SORT_FIELDS:
+            base_query['sort_on'] = DEFAULT_SORT_FIELD
+        sort_on = base_query['sort_on']
 
         if name is not None:
             base_query['id'] = name
@@ -255,8 +259,8 @@ class BaseLibraryContainer(PasteBehaviourMixin, DAVCollectionMixin,
                     folders.append(brain)
                 else:
                     non_folders.append(brain)
-        folders.sort(key=lambda b: b.sortable_title)
-        non_folders.sort(key=lambda b: b.sortable_title)
+        folders.sort(key=lambda b: getattr(b, sort_on))
+        non_folders.sort(key=lambda b: getattr(b, sort_on))
         if objects:
             def _get_object(brain):
                 portal_type = brain.portal_type
