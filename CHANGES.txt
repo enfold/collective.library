@@ -4,6 +4,8 @@ Changelog
 1.3 (unreleased)
 ----------------
 
+- Fix parent_libraries field.
+
 - Fix content sorting.
 
 - Don't store library uid in an annotation.
