@@ -1,32 +1,3 @@
 <?xml version="1.0"?>
 <registry>
-
-  <records prefix="plone.resources/mockup-patterns-inlinevalidation"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++collective.library/inlinevalidation/pattern.js</value>
-  </records>
-
-  <records prefix="plone.resources/mockup-patterns-structure"
-           interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-    <value key="js">++plone++collective.library/structure/pattern.js</value>
-    <value key="url">++plone++collective.library/structure</value>
-    <value key="css">
-      <element>++plone++collective.library/structure/less/pattern.structure.less</element>
-    </value>
-  </records>
-
-  <records prefix="plone.bundles/plone-logged-in"
-           interface='Products.CMFPlone.interfaces.IBundleRegistry'>
-    <value key="jscompilation">++plone++collective.library/plone-logged-in-compiled.min.js</value>
-    <value key="csscompilation">++plone++collective.library/plone-logged-in-compiled.css</value>
-    <value key="last_compilation">2022-08-11 00:00:00</value>
-  </records>
-
-  <records prefix="plone.bundles/plone-editor-tools"
-           interface='Products.CMFPlone.interfaces.IBundleRegistry'>
-    <value key="jscompilation">++plone++collective.library/plone-editor-tools-compiled.min.js</value>
-    <value key="csscompilation">++plone++collective.library/plone-editor-tools-compiled.css</value>
-    <value key="last_compilation">2022-08-11 00:00:00</value>
-  </records>
-
 </registry>

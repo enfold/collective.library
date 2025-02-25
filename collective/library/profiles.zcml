@@ -29,6 +29,15 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
 
+  <registerProfile
+      name="upgrade1011"
+      title="collective.library upgrade to 1011"
+      directory="profiles/upgrade1011"
+      description="collective.library upgrade to 1011"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
   <upgradeStep
     source="1001"
     destination="1002"
@@ -107,6 +116,15 @@
     title="Upgrade to 1010"
     description="Upgrade to 1010"
     handler=".upgrades.upgrade_to_1010"
+    profile="collective.library:default">
+  </upgradeStep>
+
+  <upgradeStep
+    source="1010"
+    destination="1011"
+    title="Upgrade to 1011"
+    description="Upgrade to 1011"
+    handler=".upgrades.upgrade_to_1011"
     profile="collective.library:default">
   </upgradeStep>
 

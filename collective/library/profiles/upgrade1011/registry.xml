@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<registry>
+
+  <records prefix="plone.resources/mockup-patterns-inlinevalidation"
+           interface="Products.CMFPlone.interfaces.IResourceRegistry"
+           remove="True">
+  </records>
+
+  <records prefix="plone.resources/mockup-patterns-structure"
+           interface="Products.CMFPlone.interfaces.IResourceRegistry"
+           remove="True">
+  </records>
+
+  <records prefix="plone.bundles/plone-logged-in"
+           interface="Products.CMFPlone.interfaces.IBundleRegistry"
+           remove="True">
+  </records>
+
+  <records prefix="plone.bundles/plone-editor-tools"
+           interface="Products.CMFPlone.interfaces.IBundleRegistry"
+           remove="True">
+  </records>
+</registry>
