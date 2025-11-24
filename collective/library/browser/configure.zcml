@@ -34,4 +34,11 @@
     permission="zope2.View"
     />
 
+  <browser:page
+      name="fc-contextInfo"
+      for="collective.library.interfaces.ILibraryFolderProxy"
+      class=".contents.ContextInfo"
+      permission="cmf.ListFolderContents"
+      />
+
 </configure>

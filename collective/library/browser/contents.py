@@ -4,12 +4,14 @@ from ..interfaces import ILibraryContent
 from AccessControl import getSecurityManager
 from Acquisition import aq_base
 from Acquisition import aq_inner
+from Acquisition import aq_parent
 from collective.library.content import ContentProxy
 from Products.Five import BrowserView
 from Products.MimetypesRegistry.MimeTypeItem import guess_icon_path
 from plone.api import portal as portal_api
 from plone.app.content.browser.contents import FolderContentsView as \
     FolderContentsViewBase
+from plone.app.content.browser.contents import ContextInfo as BaseContextInfo
 from plone.app.content.browser.vocabulary import VocabularyView as VocabularyViewBase
 from plone.app.content.browser.vocabulary import _parseJSON
 from plone.app.content.browser.vocabulary import _safe_callable_metadata
@@ -19,8 +21,7 @@ from plone.app.content.utils import json_dumps
 from plone.app.content.utils import json_loads
 from plone.app.contentlisting.interfaces import IContentListing
 from plone.app.contenttypes.browser.folder import FolderView as BaseFolderView
-from zope.component import getUtility
-from zope.intid.interfaces import IIntIds
+from Products.PortalTransforms.transforms.safe_html import SafeHTML
 import six
 
 
@@ -182,3 +183,42 @@ class FolderView(BaseFolderView):
     def get_url(self, item):
         parent_url = self.context.absolute_url()
         return '%s/%s' % (parent_url, item.id)
+
+
+class ContextInfo(BaseContextInfo):
+    def __call__(self):
+        portal = portal_api.get()
+        results = json_loads(super().__call__())
+        try:
+            brains = aq_parent(self.context).get_content(
+                objects=False,
+                restricted=True
+            )
+        except TypeError:
+            brains = []
+        item = None
+        if len(brains) > 0:
+            obj = brains[0]
+            # context here should be site root
+            base_path = "/".join(portal.getPhysicalPath())
+            item = {}
+            transform = SafeHTML()
+            for attr in self.attributes:
+                key = attr
+                if key == "path":
+                    attr = "getPath"
+                val = getattr(obj, attr, None)
+                if callable(val):
+                    val = val()
+                if key == "path":
+                    val = val[len(base_path) :]
+                if isinstance(val, (bytes, str)):
+                    val = transform.scrub_html(val)
+                item[key] = val
+
+        results['object'] = item
+
+        self.request.response.setHeader(
+            "Content-Type", "application/json; charset=utf-8"
+        )
+        return json_dumps(results)
